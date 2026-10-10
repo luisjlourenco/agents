@@ -1,0 +1,26 @@
+{
+  "slug": "potencial-da-base-marketing-continuo",
+  "theme": "marketing-continuo",
+  "eyebrow": "Marketing Contínuo · Diagnóstico",
+  "title": "O crescimento mais barato está na base que você já conquistou",
+  "title_highlight": "na base que você já conquistou",
+  "subtitle": "Calcule quanto de receita está parado na sua base quando marketing, vendas e atendimento não compartilham o mesmo contexto.",
+  "form_title": "Sua base hoje",
+  "primary_cta": "Ver meu potencial",
+  "secondary_cta": { "label": "Conhecer a disciplina", "url": "https://www.rdstation.com/marketing-continuo/" },
+  "privacy_note": "Os cálculos acontecem no seu navegador. Nenhum dado é enviado.",
+  "result_title": "Receita que a sua base pode gerar",
+  "inputs": [
+    { "id": "clientes", "label": "Clientes ativos", "type": "number", "placeholder": "Ex.: 800" },
+    { "id": "ticket", "label": "Ticket médio anual (R$)", "type": "number", "placeholder": "Ex.: 9000" },
+    { "id": "expansao", "label": "Clientes que compram mais por ano (%)", "type": "number", "placeholder": "Ex.: 8", "help": "Upsell e cross-sell sobre a base." },
+    { "id": "churn", "label": "Churn anual (%)", "type": "number", "placeholder": "Ex.: 18" }
+  ],
+  "outputs": [
+    { "id": "receita_base", "label": "Receita anual da base", "formula": "clientes * ticket", "format": "currency" },
+    { "id": "ganho_expansao", "label": "Expansão ao dobrar o upsell", "formula": "clientes * (expansao / 100) * ticket * 0.3", "format": "currency" },
+    { "id": "ganho_retencao", "label": "Receita salva com metade do churn", "formula": "receita_base * (churn / 100) / 2", "format": "currency" },
+    { "id": "potencial", "label": "Potencial anual na base", "formula": "ganho_expansao + ganho_retencao", "format": "currency" }
+  ],
+  "insight": "Há ${potencial} por ano na sua base sem precisar de um cliente novo. Esse é o efeito de a informação circular entre as áreas."
+}

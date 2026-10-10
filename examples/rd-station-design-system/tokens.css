@@ -1,0 +1,251 @@
+/* ==========================================================================
+   RD Kit — tokens.css
+   Camada 1: tokens Tangram (design system oficial da RD Station)
+   Camada 2: Key Visual (KV) de marca para ferramentas, landing pages e eventos
+   --------------------------------------------------------------------------
+   Regra: nenhuma ferramenta usa hex solto. Tudo passa por var(--token).
+   Valores marcados com [derivado] não constam da tabela pública do Tangram e
+   foram definidos aqui para fechar o contrato dos componentes — valide com o
+   time de Design antes de usar fora do RD Kit.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700;9..40,800&family=Red+Hat+Display:ital,wght@0,300;0,400;0,700;0,800;0,900;1,800;1,900&family=Inter+Tight:wght@400;500;700&display=swap");
+
+:root {
+  /* ---------- Primárias ---------- */
+  --primary-border: #00DBFF;
+  --primary-border-hover: #0088CC;
+  --primary-icon: #0077B2;
+  --primary-icon-hover: #005580;
+  --primary-icon-on-color: #00DBFF;
+  --primary-icon-on-color-hover: #66E9FF;
+  --primary-surface-high-emphasis: #00DBFF;
+  --primary-surface-low-emphasis: #B2F4FF;
+  --primary-surface-hover: #66EBFF;
+  --primary-text: #0077B2;
+  --primary-text-hover: #005580;
+  --primary-text-on-color: #00DBFF;
+  --primary-text-on-color-hover: #66E9FF;
+  --primary-surface-inverse-interactive-hover: rgba(0, 219, 255, 0.12); /* [derivado] */
+
+  /* ---------- Neutras ---------- */
+  --neutral-border: #D6DBDE;
+  --neutral-border-interactive: #B2BCC1;
+  --neutral-border-interactive-hover: #8C9BA3;
+  --neutral-border-interactive-disabled: #E5E8EA;
+  --neutral-icon-high-emphasis: #002233;
+  --neutral-icon-low-emphasis: #596B7A;
+  --neutral-icon-disabled: #8C98A3;
+  --neutral-icon-inverse: #FFFFFF;
+  --neutral-icon-inverse-disabled: rgba(255, 255, 255, 0.4); /* [derivado] */
+  --neutral-surface: #FFFFFF;
+  --neutral-surface-high-emphasis: #E5E8EA;
+  --neutral-surface-low-emphasis: #ECEEEF;
+  --neutral-surface-hover: #DADEE0;
+  --neutral-surface-disabled: #EDEFF1;
+  --neutral-surface-inverse: #002233;
+  --neutral-surface-inverse-interactive: #002233;       /* [derivado] fundo do botão primário */
+  --neutral-surface-inverse-interactive-hover: #0A3A52; /* [derivado] */
+  --neutral-text-high-emphasis: #002233;
+  --neutral-text-low-emphasis: #405466;
+  --neutral-text-disabled: #7F8D99;
+  --neutral-text-inverse: #FFFFFF;
+  --neutral-text-inverse-disabled: rgba(255, 255, 255, 0.4); /* [derivado] */
+  --neutral-focus-outline: #0077B2;                          /* [derivado] */
+
+  /* ---------- Funcionais (nunca decorativas) ---------- */
+  --danger-border: #C20046;
+  --danger-icon: #C20046;
+  --danger-surface-high-emphasis: #E60F57;
+  --danger-surface-low-emphasis: #FFD6E4;
+  --danger-surface-hover: #F53D74;
+  --danger-text: #C20046;
+  --danger-text-on-color: #F53D74;
+  --danger-text-on-color-hover: #E60F57;
+
+  --success-border: #0AAF54;
+  --success-icon: #087A3A;
+  --success-surface-high-emphasis: #0ED869;
+  --success-surface-low-emphasis: #D6FAE8;
+  --success-surface-hover: #29DE82;
+  --success-text: #087A3A;
+  --success-text-on-color: #29DE82;
+
+  --warning-border: #D4920A;
+  --warning-icon: #A06800;
+  --warning-surface-high-emphasis: #FFBD28;
+  --warning-surface-low-emphasis: #FFF3D0;
+  --warning-surface-hover: #FFC73E;
+  --warning-text: #A06800;
+  --warning-text-on-color: #FFBD28;
+
+  --highlight-border: #6E00C5;
+  --highlight-icon: #6E00C5;
+  --highlight-surface-high-emphasis: #8800F7;
+  --highlight-surface-low-emphasis: #EDD6FF;
+  --highlight-surface-hover: #9E38FF;
+  --highlight-text: #6E00C5;
+  --highlight-text-on-color: #B570FF;
+
+  /* ---------- Suporte (APENAS gráficos e data viz) ---------- */
+  --support-mint: #00F2C9;
+  --support-soft-mint: #81F0D8;
+  --support-breeze-mint: #CCFCF1;
+  --support-magenta: #ED0093;
+  --support-soft-pink: #FA86C5;
+  --support-breeze-pink: #FDD6EA;
+  --support-orange: #FF8900;
+  --support-soft-orange: #FFC676;
+  --support-breeze-orange: #FFE8C2;
+  --support-lime: #C3F628;
+  --support-deep-lime: #9FCA1D;
+  --support-soft-lime: #E6FC88;
+  --support-breeze-lime: #F6FED0;
+
+  /* ---------- Espaçamento (grid 8px) ---------- */
+  --size-spacing-01: 4px;
+  --size-spacing-02: 8px;
+  --size-spacing-03: 12px;
+  --size-spacing-04: 16px;
+  --size-spacing-05: 24px;
+  --size-spacing-06: 32px;
+  --size-spacing-07: 40px;
+  --size-spacing-08: 48px;
+  --size-spacing-09: 56px;
+  --size-spacing-10: 64px;
+  --size-spacing-11: 96px;
+  --size-spacing-12: 160px;
+
+  /* ---------- Formas ---------- */
+  --border-radius-circle: 50%;
+  --border-radius-pill: 999px;
+  --border-radius-xs: 4px;
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 24px;
+  --border-radius-xxl: 32px;
+
+  /* ---------- Elevação ---------- [derivado: curvas de sombra] */
+  --shadow-xs: 0 1px 2px rgba(0, 34, 51, 0.08);
+  --shadow-sm: 0 4px 12px rgba(0, 34, 51, 0.12);
+  --shadow-md: 0 8px 24px rgba(0, 34, 51, 0.14);
+  --shadow-lg: 0 12px 32px rgba(0, 34, 51, 0.16);
+  --shadow-xl: 0 16px 48px rgba(0, 34, 51, 0.24);
+
+  /* ---------- Z-index ---------- */
+  --zindex-back: -1;
+  --zindex-0: 1;
+  --zindex-1: 1000;
+  --zindex-2: 1010;
+  --zindex-3: 1020;
+  --zindex-4: 1030;
+  --zindex-5: 1040;
+  --zindex-6: 1050;
+
+  /* ---------- Motion ---------- */
+  --motion-duration-extra-fast: 100ms;
+  --motion-duration-fast: 200ms;
+  --motion-duration-normal: 300ms;
+  --motion-timing-function-ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --motion-timing-function-ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --motion-timing-function-ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  /* ==========================================================================
+     Camada 2 — Key Visual RD Station (site, eventos, ferramentas de mercado)
+     Navy profundo + ciano elétrico + lime de destaque + geometria Tangram.
+     ========================================================================== */
+  --kv-navy-900: #001927;  /* fundo de marca: navbar, heros, slides de impacto */
+  --kv-navy-800: #002233;  /* superfície inversa / texto de máxima ênfase */
+  --kv-navy-700: #0A3A52;  /* cards sobre navy [derivado] */
+  --kv-cyan: #00DBFF;      /* cor-assinatura: logo on-dark, acentos, CTAs on-dark */
+  --kv-cyan-soft: #66E9FF;
+  --kv-lime: #C3F628;      /* CTA de campanha em região Highlight */
+  --kv-violet-start: #7B4AFF; /* gradiente Tangram (apenas KV/ilustração) */
+  --kv-violet-end: #3C10B1;
+
+  --kv-gradient-hero: radial-gradient(120% 120% at 85% 0%, #0A3A52 0%, #001927 55%);
+  --kv-gradient-tangram: linear-gradient(135deg, var(--kv-violet-start), var(--kv-violet-end));
+  --kv-glow-cyan: 0 0 0 1px rgba(0, 219, 255, 0.24), 0 8px 32px rgba(0, 219, 255, 0.16);
+
+  /* Logo */
+  --brand-logo-height: 32px;     /* altura fixa do componente Brand */
+  --brand-logo-clearspace: 16px; /* área de respiro mínima ao redor */
+}
+
+/* Tipografia composta. Declarada em :root e em [data-theme] para que cada tema
+   recalcule os atalhos com a sua própria --font-family. */
+:root {
+  --font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root, [data-theme] {
+  --text-xxl-regular:   400 36px/46px var(--font-family);
+  --text-xxl-bold:      700 36px/46px var(--font-family);
+  --text-xxl-extrabold: 800 36px/46px var(--font-family);
+  --text-xl-regular:    400 28px/36px var(--font-family);
+  --text-xl-bold:       700 28px/36px var(--font-family);
+  --text-xl-extrabold:  800 28px/36px var(--font-family);
+  --text-lg-regular:    400 20px/30px var(--font-family);
+  --text-lg-bold:       700 20px/30px var(--font-family);
+  --text-lg-extrabold:  800 20px/30px var(--font-family);
+  --text-md-regular:    400 16px/24px var(--font-family);
+  --text-md-bold:       700 16px/24px var(--font-family);
+  --text-md-extrabold:  800 16px/24px var(--font-family);
+  --text-sm-regular:    400 14px/20px var(--font-family);
+  --text-sm-bold:       700 14px/20px var(--font-family);
+  --text-sm-extrabold:  800 14px/20px var(--font-family);
+  --text-xs-regular:    400 12px/16px var(--font-family);
+  --text-xs-bold:       700 12px/16px var(--font-family);
+  --text-xs-extrabold:  800 12px/16px var(--font-family);
+  --letter-spacing-xxl: -0.02em;
+  --letter-spacing-default: -0.01em;
+  --letter-spacing-xs: 0em;
+
+}
+
+/* ==========================================================================
+   Camada 3 — Endosso TOTVS
+   O logo TOTVS (brand/totvs-logo*.svg) vem do componente Brand do Tangram.
+   Paleta e tipografia institucionais da TOTVS: A PREENCHER com os valores
+   oficiais de https://marca.totvs.com/identidade-visual/ antes de qualquer
+   peça co-branded que vá além do endosso. Não use valores aproximados.
+   ========================================================================== */
+:root {
+  --totvs-logo-color: #002233;          /* fill do SVG oficial (Brand Tangram) */
+  --totvs-logo-color-on-dark: #FFFFFF;
+  --endorsement-label: "uma operação";  /* assinatura usada nos materiais RD Station */
+}
+
+/* ==========================================================================
+   Tema — Marketing Contínuo  (<html data-theme="marketing-continuo">)
+   Fonte: guia visual "Marketing Contínuo: Tudo sobre a Disciplina de
+   Crescimento". Valores amostrados do material oficial.
+   ========================================================================== */
+[data-theme="marketing-continuo"] {
+  --font-family: "Inter Tight", "DM Sans", system-ui, sans-serif;  /* corpo */
+  --font-display: "Red Hat Display", "DM Sans", system-ui, sans-serif; /* títulos */
+
+  --mc-navy: #002233;          /* fundo dominante (85% das páginas escuras) */
+  --mc-navy-raised: #0B2C4A;   /* cards e painéis sobre navy */
+  --mc-navy-line: #023548;     /* divisórias e listras escuras */
+  --mc-purple: #A44DFF;        /* fundo de slide-impacto, numerais de seção, grafismos */
+  --mc-purple-deep: #7B2FFF;   /* botões e faixas com texto pequeno (5,69:1 com branco) */
+  --mc-purple-text: #B57BFF;   /* [derivado] texto roxo pequeno sobre navy (5,67:1) */
+  --mc-cyan: #00DBFF;          /* headlines on-dark, faixas, destaques */
+  --mc-cyan-deep: #00C9EB;     /* listras diagonais e anéis */
+  --mc-lime: #D9FC68;          /* grafismo de digital, marcador de chip */
+  --mc-gray: #EFEFEF;          /* fundo claro dos slides de conceito */
+  --mc-gray-2: #DDDDDD;        /* painel claro em split-screen */
+
+  --mc-stripes: repeating-linear-gradient(115deg, var(--mc-cyan-deep) 0 10px, transparent 10px 34px);
+  --mc-fingerprint: repeating-radial-gradient(circle at 0% 100%, var(--mc-purple) 0 3px, transparent 3px 10px);
+  --mc-fingerprint-lime: repeating-radial-gradient(circle at 0% 50%, var(--mc-lime) 0 3px, transparent 3px 10px);
+
+  /* O tema remapeia o KV base para o universo Marketing Contínuo */
+  --kv-navy-900: var(--mc-navy);
+  --kv-navy-700: var(--mc-navy-raised);
+  --kv-gradient-hero: linear-gradient(180deg, var(--mc-navy) 0%, var(--mc-navy-raised) 100%);
+  --primary-surface-high-emphasis: var(--mc-cyan);
+}

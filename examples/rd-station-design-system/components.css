@@ -1,0 +1,445 @@
+/* ==========================================================================
+   RD Kit — components.css
+   Componentes Tangram em CSS puro + padrões de ferramenta (shell, hero, KV).
+   Depende de tokens.css. Sem framework, sem build: copie e use.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font: var(--text-md-regular);
+  letter-spacing: var(--letter-spacing-default);
+  color: var(--neutral-text-high-emphasis);
+  background: var(--neutral-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: var(--size-spacing-01) solid var(--neutral-focus-outline);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}
+
+/* ---------- Tipografia utilitária ---------- */
+.t-xxl { font: var(--text-xxl-extrabold); letter-spacing: var(--letter-spacing-xxl); }
+.t-xl  { font: var(--text-xl-extrabold); }
+.t-lg  { font: var(--text-lg-bold); }
+.t-md  { font: var(--text-md-regular); }
+.t-sm  { font: var(--text-sm-regular); }
+.t-xs  { font: var(--text-xs-bold); letter-spacing: var(--letter-spacing-xs); text-transform: uppercase; }
+.t-low { color: var(--neutral-text-low-emphasis); }
+
+/* ---------- Regiões (Default / Contrast / Highlight) ---------- */
+.region-contrast  { background: var(--kv-navy-900); color: var(--neutral-text-inverse); }
+.region-highlight { background: var(--highlight-surface-high-emphasis); color: var(--neutral-text-inverse); }
+
+/* ---------- Brand (logo oficial) ---------- */
+.brand {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--brand-logo-height); margin: 0; padding: 0;
+  border: 0; background: transparent; flex-shrink: 0;
+}
+.brand > svg, .brand > img { display: block; height: 100%; width: auto; }
+
+/* ---------- Button ---------- */
+.btn {
+  /* Default + md (perfil confortável) */
+  --button-size: 40px;
+  --button-icon-size: 24px;
+  --button-padding: var(--size-spacing-04);
+  --button-border-radius: var(--border-radius-md);
+  --button-font: var(--text-md-bold);
+  /* kind primary (Default) */
+  --button-text-color: var(--primary-text-on-color);
+  --button-icon-color: var(--primary-icon-on-color);
+  --button-background-color: var(--neutral-surface-inverse-interactive);
+  --button-text-color-hover: var(--primary-text-on-color-hover);
+  --button-icon-color-hover: var(--primary-icon-on-color-hover);
+  --button-background-color-hover: var(--neutral-surface-inverse-interactive-hover);
+  --button-text-color-disabled: var(--neutral-text-disabled);
+  --button-icon-color-disabled: var(--neutral-icon-disabled);
+  --button-background-color-disabled: var(--neutral-surface-disabled);
+
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--size-spacing-02);
+  height: var(--button-size); min-height: var(--button-size);
+  padding: 0 var(--button-padding);
+  border: 0; border-radius: var(--button-border-radius);
+  font: var(--button-font); white-space: nowrap; user-select: none;
+  cursor: pointer; text-decoration: none; vertical-align: middle;
+  color: var(--button-text-color);
+  background-color: var(--button-background-color);
+  transition: background-color var(--motion-duration-extra-fast) var(--motion-timing-function-ease-in-out);
+}
+.btn svg { width: var(--button-icon-size); height: var(--button-icon-size); fill: var(--button-icon-color); }
+.btn:hover, .btn:focus-visible, .btn:active {
+  color: var(--button-text-color-hover);
+  background-color: var(--button-background-color-hover);
+}
+.btn:hover svg { fill: var(--button-icon-color-hover); }
+.btn:disabled, .btn[aria-disabled="true"], .btn[aria-busy="true"] {
+  cursor: not-allowed;
+  color: var(--button-text-color-disabled);
+  background-color: var(--button-background-color-disabled);
+}
+.btn--fluid { width: 100%; }
+
+.btn--secondary {
+  --button-text-color: var(--primary-text);
+  --button-icon-color: var(--primary-icon);
+  --button-background-color: var(--primary-surface-low-emphasis);
+  --button-text-color-hover: var(--primary-text-hover);
+  --button-icon-color-hover: var(--primary-icon-hover);
+  --button-background-color-hover: var(--primary-surface-hover);
+}
+.btn--tertiary {
+  --button-text-color: var(--primary-text);
+  --button-icon-color: var(--primary-icon);
+  --button-background-color: transparent;
+  --button-text-color-hover: var(--primary-text-hover);
+  --button-icon-color-hover: var(--primary-icon-hover);
+  --button-background-color-hover: var(--primary-surface-low-emphasis);
+  --button-background-color-disabled: transparent;
+}
+.btn--danger {
+  --button-text-color: var(--neutral-text-inverse);
+  --button-icon-color: var(--neutral-icon-inverse);
+  --button-background-color: var(--danger-surface-high-emphasis);
+  --button-text-color-hover: var(--neutral-text-inverse);
+  --button-icon-color-hover: var(--neutral-icon-inverse);
+  --button-background-color-hover: var(--danger-surface-hover);
+}
+.btn--neutral {
+  --button-text-color: var(--neutral-text-low-emphasis);
+  --button-icon-color: var(--neutral-icon-low-emphasis);
+  --button-background-color: transparent;
+  --button-text-color-hover: var(--neutral-text-high-emphasis);
+  --button-icon-color-hover: var(--neutral-icon-high-emphasis);
+  --button-background-color-hover: var(--neutral-surface-low-emphasis);
+  --button-background-color-disabled: transparent;
+}
+
+/* Perfil compacto: sm, ou qualquer botão em Contrast/Highlight */
+.btn--sm, .region-contrast .btn, .region-highlight .btn {
+  --button-size: 32px;
+  --button-icon-size: 20px;
+  --button-padding: var(--size-spacing-03);
+  --button-border-radius: var(--border-radius-sm);
+  --button-font: var(--text-sm-bold);
+}
+
+/* Contrast: primary/secondary/tertiary/neutral compartilham o mapa neutral */
+.region-contrast .btn {
+  --button-text-color: var(--primary-text-on-color);
+  --button-icon-color: var(--primary-icon-on-color);
+  --button-background-color: transparent;
+  --button-text-color-hover: var(--primary-text-on-color-hover);
+  --button-icon-color-hover: var(--primary-icon-on-color-hover);
+  --button-background-color-hover: var(--primary-surface-inverse-interactive-hover);
+  --button-text-color-disabled: var(--neutral-text-inverse-disabled);
+  --button-icon-color-disabled: var(--neutral-icon-inverse-disabled);
+  --button-background-color-disabled: transparent;
+}
+.region-contrast .btn--danger {
+  --button-text-color: var(--danger-text-on-color);
+  --button-icon-color: var(--danger-text-on-color);
+  --button-text-color-hover: var(--danger-text-on-color-hover);
+}
+
+/* Highlight */
+.region-highlight .btn {
+  --button-text-color: var(--neutral-text-inverse);
+  --button-icon-color: var(--neutral-icon-inverse);
+  --button-background-color: transparent;
+  --button-text-color-hover: var(--neutral-text-inverse);
+  --button-icon-color-hover: var(--neutral-icon-inverse);
+  --button-background-color-hover: var(--highlight-surface-low-emphasis);
+  --button-text-color-disabled: var(--neutral-text-inverse-disabled);
+  --button-icon-color-disabled: var(--neutral-icon-inverse-disabled);
+  --button-background-color-disabled: transparent;
+}
+.region-highlight .btn--primary {
+  --button-text-color: var(--neutral-text-high-emphasis);
+  --button-icon-color: var(--neutral-icon-high-emphasis);
+  --button-background-color: var(--support-lime);
+  --button-text-color-hover: var(--neutral-text-low-emphasis);
+  --button-background-color-hover: var(--support-soft-lime);
+  --button-background-color-disabled: rgba(255, 255, 255, 0.4);
+}
+.region-highlight .btn--secondary {
+  --button-text-color: var(--neutral-text-high-emphasis);
+  --button-icon-color: var(--neutral-icon-high-emphasis);
+  --button-background-color: var(--neutral-surface-low-emphasis);
+  --button-text-color-hover: var(--neutral-text-low-emphasis);
+  --button-background-color-hover: var(--neutral-surface);
+}
+
+/* CTA de KV (hero de ferramenta sobre navy): lime é a única exceção de CTA forte on-dark */
+.btn--kv {
+  --button-size: 48px;
+  --button-padding: var(--size-spacing-05);
+  --button-border-radius: var(--border-radius-md);
+  --button-font: var(--text-md-bold);
+  --button-text-color: var(--kv-navy-900);
+  --button-icon-color: var(--kv-navy-900);
+  --button-background-color: var(--kv-lime);
+  --button-text-color-hover: var(--kv-navy-900);
+  --button-icon-color-hover: var(--kv-navy-900);
+  --button-background-color-hover: var(--support-soft-lime);
+}
+
+/* ---------- Link ---------- */
+.link { color: var(--primary-text); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: var(--size-spacing-01); }
+.link:hover, .link:focus-visible { color: var(--primary-text-hover); text-decoration: underline; }
+.region-contrast .link { color: var(--primary-text-on-color); }
+
+/* ---------- Form ---------- */
+.form-control { display: flex; flex-direction: column; gap: var(--size-spacing-02); margin-bottom: var(--size-spacing-04); }
+.form-label { font: var(--text-md-bold); color: var(--neutral-text-high-emphasis); }
+.form-label .required { color: var(--danger-text); }
+.form-feedback { font: var(--text-sm-regular); color: var(--neutral-text-low-emphasis); }
+.form-control[data-error="true"] .form-feedback { color: var(--danger-text); }
+.form-control[data-success="true"] .form-feedback { color: var(--success-text); }
+
+.input, .select, .textarea {
+  --input-height: 40px;
+  width: 100%; min-height: var(--input-height);
+  padding: 0 var(--size-spacing-03);
+  font: var(--text-md-regular); color: var(--neutral-text-high-emphasis);
+  background: var(--neutral-surface);
+  border: 1px solid var(--neutral-border-interactive);
+  border-radius: var(--border-radius-md);
+  transition: border-color var(--motion-duration-extra-fast) var(--motion-timing-function-ease-in-out);
+}
+.textarea { padding: var(--size-spacing-03); resize: vertical; min-height: 96px; }
+.input::placeholder, .textarea::placeholder { color: var(--neutral-text-low-emphasis); }
+.input:hover, .select:hover, .textarea:hover { border-color: var(--neutral-border-interactive-hover); }
+.input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--primary-border-hover); box-shadow: 0 0 0 3px var(--primary-surface-low-emphasis); }
+.input[aria-invalid="true"] { border-color: var(--danger-border); }
+.input:disabled { background: var(--neutral-surface-disabled); border-color: var(--neutral-border-interactive-disabled); color: var(--neutral-text-disabled); }
+
+.check { display: inline-flex; align-items: flex-start; gap: var(--size-spacing-03); cursor: pointer; font: var(--text-md-regular); }
+.check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--primary-icon); }
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--neutral-surface);
+  border: 1px solid var(--neutral-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--size-spacing-05);
+  transition: box-shadow var(--motion-duration-fast) var(--motion-timing-function-ease-out),
+              border-color var(--motion-duration-fast) var(--motion-timing-function-ease-out);
+}
+.card--compact { padding: var(--size-spacing-04); }
+.card--clickable { cursor: pointer; }
+.card--clickable:hover { box-shadow: var(--shadow-sm); }
+.card--active { background: var(--primary-surface-high-emphasis); border-color: transparent; }
+.region-contrast .card { background: var(--kv-navy-700); border-color: rgba(255, 255, 255, 0.08); color: var(--neutral-text-inverse); }
+
+/* ---------- DataBlock (KPI) ---------- */
+.data-block { display: inline-flex; flex-direction: column; gap: var(--size-spacing-01); }
+.data-block__title { font: var(--text-sm-bold); color: var(--neutral-text-low-emphasis); text-transform: uppercase; }
+.data-block__value { font: var(--text-xxl-bold); letter-spacing: var(--letter-spacing-xxl); display: flex; align-items: baseline; gap: var(--size-spacing-01); }
+.data-block__aux { font: var(--text-sm-bold); color: var(--neutral-text-low-emphasis); padding-top: var(--size-spacing-02); }
+.data-block__aux--up { color: var(--success-text); }
+.data-block__aux--down { color: var(--danger-text); }
+
+/* ---------- Tag ---------- */
+.tag {
+  display: inline-flex; align-items: center; gap: var(--size-spacing-01);
+  height: 24px; padding: 0 var(--size-spacing-02);
+  border-radius: var(--border-radius-xs);
+  font: var(--text-xs-bold); letter-spacing: var(--letter-spacing-xs);
+  background: var(--neutral-surface-low-emphasis); color: var(--neutral-text-high-emphasis);
+}
+.tag--primary   { background: var(--primary-surface-low-emphasis);   color: var(--primary-text-hover); }
+.tag--success   { background: var(--success-surface-low-emphasis);   color: var(--success-text); }
+.tag--warning   { background: var(--warning-surface-low-emphasis);   color: var(--warning-text); }
+.tag--danger    { background: var(--danger-surface-low-emphasis);    color: var(--danger-text); }
+.tag--highlight { background: var(--highlight-surface-low-emphasis); color: var(--highlight-text); }
+
+/* ---------- Badge ---------- */
+.badge { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 var(--size-spacing-02); border-radius: var(--border-radius-sm); font: var(--text-xs-extrabold); background: var(--danger-surface-high-emphasis); color: var(--neutral-text-inverse); }
+
+/* ---------- Alert (crítico, fixo no topo, não fechável) ---------- */
+.alert { width: 100%; display: flex; align-items: center; gap: var(--size-spacing-02); padding: var(--size-spacing-02) var(--size-spacing-04); font: var(--text-sm-bold); }
+.alert--danger  { color: var(--neutral-text-inverse); background: var(--danger-surface-high-emphasis); }
+.alert--warning { color: var(--neutral-text-high-emphasis); background: var(--warning-surface-high-emphasis); }
+.alert a { color: inherit; text-decoration: underline; }
+
+/* ---------- Message (inline) ---------- */
+.message { display: flex; gap: var(--size-spacing-03); padding: var(--size-spacing-04); border-radius: var(--border-radius-md); font: var(--text-sm-regular); }
+.message strong { display: block; font: var(--text-md-bold); margin-bottom: var(--size-spacing-01); }
+.message--primary { background: var(--primary-surface-low-emphasis); }
+.message--success { background: var(--success-surface-low-emphasis); }
+.message--warning { background: var(--warning-surface-low-emphasis); }
+.message--danger  { background: var(--danger-surface-low-emphasis); }
+.message--help    { background: var(--highlight-surface-low-emphasis); }
+
+/* ---------- Toast ---------- */
+.toast-stack { position: fixed; top: var(--size-spacing-06); right: var(--size-spacing-06); z-index: var(--zindex-6); display: flex; flex-direction: column; gap: var(--size-spacing-03); }
+.toast { width: 300px; padding: var(--size-spacing-04); border-radius: var(--border-radius-md); background: var(--neutral-surface); box-shadow: var(--shadow-md); border-left: 4px solid var(--primary-border); font: var(--text-sm-regular); }
+.toast--success { border-left-color: var(--success-border); }
+.toast--danger  { border-left-color: var(--danger-border); }
+
+/* ---------- Table ---------- */
+.table { width: 100%; border-collapse: collapse; font: var(--text-sm-regular); }
+.table th { font: var(--text-xs-bold); letter-spacing: var(--letter-spacing-xs); text-transform: uppercase; color: var(--neutral-text-low-emphasis); text-align: left; padding: var(--size-spacing-03) var(--size-spacing-04); border-bottom: 1px solid var(--neutral-border); }
+.table td { padding: var(--size-spacing-03) var(--size-spacing-04); border-bottom: 1px solid var(--neutral-border); }
+.table tbody tr:nth-child(even) { background: var(--neutral-surface-low-emphasis); }
+.table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- ProgressBar ---------- */
+.progress { height: 8px; border-radius: var(--border-radius-pill); background: var(--neutral-surface-high-emphasis); overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--primary-surface-high-emphasis); border-radius: inherit; transition: width var(--motion-duration-normal) var(--motion-timing-function-ease-out); }
+
+/* ---------- Steps ---------- */
+.steps { display: flex; gap: var(--size-spacing-02); list-style: none; }
+.steps li { flex: 1; display: flex; flex-direction: column; gap: var(--size-spacing-02); font: var(--text-sm-bold); color: var(--neutral-text-low-emphasis); }
+.steps li::before { content: ""; height: 4px; border-radius: var(--border-radius-pill); background: var(--neutral-surface-high-emphasis); }
+.steps li[aria-current="step"], .steps li.is-done { color: var(--neutral-text-high-emphasis); }
+.steps li[aria-current="step"]::before, .steps li.is-done::before { background: var(--primary-surface-high-emphasis); }
+
+/* ---------- Skeleton ---------- */
+.skeleton { border-radius: var(--border-radius-sm); background: linear-gradient(90deg, var(--neutral-surface-low-emphasis) 25%, var(--neutral-surface-high-emphasis) 50%, var(--neutral-surface-low-emphasis) 75%); background-size: 200% 100%; animation: rd-skeleton 1.2s infinite linear; }
+@keyframes rd-skeleton { to { background-position: -200% 0; } }
+
+/* ==========================================================================
+   PADRÕES DE FERRAMENTA
+   ========================================================================== */
+
+/* ---------- App shell (produto logado) — espelha o template canônico Tangram ---------- */
+.layout { display: grid; grid-template-rows: 64px 1fr; grid-template-columns: 64px 1fr; grid-template-areas: "navbar navbar" "sidebar content"; height: 100vh; background: var(--kv-navy-900); }
+.navbar { grid-area: navbar; display: flex; align-items: center; justify-content: space-between; padding: var(--size-spacing-03); background: var(--kv-navy-900); color: var(--neutral-text-inverse); z-index: var(--zindex-2); }
+.sidebar { grid-area: sidebar; display: flex; flex-direction: column; align-items: center; gap: var(--size-spacing-02); padding-top: var(--size-spacing-03); background: var(--kv-navy-900); }
+.sidebar a { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--border-radius-sm); color: var(--neutral-icon-inverse); }
+.sidebar a:hover, .sidebar a[aria-current="page"] { background: rgba(255, 255, 255, 0.08); color: var(--kv-cyan); }
+.content { grid-area: content; background: var(--neutral-surface); border-top-left-radius: 20px; overflow-y: auto; padding: 0 var(--size-spacing-05) var(--size-spacing-05); }
+
+/* ---------- Page header ---------- */
+.page-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--size-spacing-03); padding: var(--size-spacing-07) 0 var(--size-spacing-05); }
+.page-header h1 { font: var(--text-xl-extrabold); }
+
+/* ---------- Ferramenta pública (site / lead-gen / evento) ---------- */
+.tool-topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--size-spacing-04); padding: var(--size-spacing-04) var(--size-spacing-05); background: var(--kv-navy-900); }
+.container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--size-spacing-04); }
+@media (min-width: 768px) { .container { padding: 0 var(--size-spacing-06); } }
+
+.hero-kv {
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--kv-gradient-hero); color: var(--neutral-text-inverse);
+  padding: var(--size-spacing-10) 0 var(--size-spacing-11);
+}
+.hero-kv__eyebrow { font: var(--text-sm-bold); color: var(--kv-cyan); text-transform: uppercase; letter-spacing: 0.08em; }
+.hero-kv h1 { font: var(--text-xxl-extrabold); font-size: clamp(32px, 5vw, 56px); line-height: 1.1; letter-spacing: var(--letter-spacing-xxl); max-width: 16ch; margin: var(--size-spacing-03) 0 var(--size-spacing-04); }
+.hero-kv h1 em { font-style: normal; color: var(--kv-cyan); }
+.hero-kv p { font: var(--text-lg-regular); color: rgba(255, 255, 255, 0.78); max-width: 52ch; }
+/* Geometria Tangram: peças triangulares como textura de KV, nunca sobre texto */
+.hero-kv::after {
+  content: ""; position: absolute; z-index: -1; right: -80px; top: -40px;
+  width: 420px; height: 420px; opacity: 0.9;
+  background:
+    conic-gradient(from 45deg at 50% 50%, transparent 0 25%, rgba(0, 219, 255, 0.85) 0 37.5%, transparent 0 50%, rgba(102, 233, 255, 0.5) 0 62.5%, transparent 0) ,
+    linear-gradient(135deg, rgba(123, 74, 255, 0.55), rgba(60, 16, 177, 0.15));
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+@media (max-width: 767px) { .hero-kv::after { width: 180px; height: 180px; right: -90px; top: auto; bottom: -70px; opacity: 0.35; } }
+
+.tool-panel { position: relative; margin-top: calc(-1 * var(--size-spacing-10)); background: var(--neutral-surface); border-radius: var(--border-radius-xl); box-shadow: var(--shadow-lg); padding: var(--size-spacing-06); }
+@media (max-width: 767px) { .tool-panel { padding: var(--size-spacing-05) var(--size-spacing-04); border-radius: var(--border-radius-lg); } }
+
+.grid-2 { display: grid; gap: var(--size-spacing-05); grid-template-columns: 1fr; }
+.grid-3 { display: grid; gap: var(--size-spacing-05); grid-template-columns: 1fr; }
+@media (min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* ---------- Rodapé com endosso TOTVS ---------- */
+.tool-footer { background: var(--kv-navy-900); color: rgba(255, 255, 255, 0.72); padding: var(--size-spacing-07) 0; font: var(--text-sm-regular); }
+.tool-footer__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--size-spacing-04); }
+.endorsement { display: inline-flex; align-items: center; gap: var(--size-spacing-03); font: var(--text-xs-bold); color: rgba(255, 255, 255, 0.64); }
+.endorsement .brand { height: 20px; }
+
+/* Títulos usam a fonte de display do tema (DM Sans no padrão, Red Hat Display no Marketing Contínuo) */
+.t-xxl, .t-xl, .t-lg, .hero-kv h1, .page-header h1, .tool-panel h2, .data-block__value { font-family: var(--font-display); }
+
+/* ==========================================================================
+   TEMA MARKETING CONTÍNUO — padrões extraídos do guia visual
+   ========================================================================== */
+
+/* Eyebrow: caixa alta, itálico extra-bold, ciano */
+[data-theme="marketing-continuo"] .hero-kv__eyebrow,
+.mc-eyebrow {
+  font: italic 800 14px/20px var(--font-display);
+  color: var(--mc-cyan); letter-spacing: 0.02em; text-transform: uppercase;
+}
+
+/* Headline com peso misto: <strong> pesado + resto light, como nos slides de conceito */
+[data-theme="marketing-continuo"] .hero-kv h1 { font-weight: 800; letter-spacing: -0.01em; }
+[data-theme="marketing-continuo"] .hero-kv h1 em { color: var(--mc-cyan); font-weight: 300; }
+.mc-headline { font: 300 clamp(28px, 4vw, 44px)/1.1 var(--font-display); }
+.mc-headline strong { font-weight: 800; }
+
+/* Abertura de seção: "01 · TÍTULO" — numeral roxo, título ciano, ambos itálico */
+.mc-section { display: flex; align-items: center; gap: var(--size-spacing-04); }
+.mc-section__number { font: italic 900 clamp(40px, 6vw, 64px)/1 var(--font-display); color: var(--mc-purple); }
+.mc-section__number::after { content: " ·"; }
+.mc-section__title { font: italic 900 clamp(20px, 3vw, 32px)/1.1 var(--font-display); color: var(--mc-cyan); text-transform: uppercase; }
+
+/* Hero do tema: navy chapado, listras diagonais ciano no topo e "digital" roxa no canto */
+[data-theme="marketing-continuo"] .hero-kv { background: var(--kv-gradient-hero); }
+[data-theme="marketing-continuo"] .hero-kv::before {
+  content: ""; position: absolute; z-index: -1; inset: 0 0 auto 0; height: 28px;
+  background: var(--mc-stripes); opacity: 0.55;
+}
+[data-theme="marketing-continuo"] .hero-kv::after {
+  clip-path: none; left: auto; right: -140px; top: auto; bottom: -140px;
+  width: 420px; height: 420px; border-radius: 50%; opacity: 0.9;
+  background: repeating-radial-gradient(circle at 50% 50%, var(--mc-purple) 0 3px, transparent 3px 10px);
+}
+@media (max-width: 767px) {
+  [data-theme="marketing-continuo"] .hero-kv::after { width: 200px; height: 200px; right: -120px; bottom: -110px; opacity: 0.5; }
+}
+
+/* Botão primário do tema: roxo profundo + branco (5,69:1). #A44DFF puro não passa AA em 16px */
+[data-theme="marketing-continuo"] .btn:not(.region-contrast .btn):not(.btn--secondary):not(.btn--tertiary):not(.btn--neutral):not(.btn--danger) {
+  --button-text-color: var(--neutral-text-inverse);
+  --button-icon-color: var(--neutral-icon-inverse);
+  --button-background-color: var(--mc-purple-deep);
+  --button-text-color-hover: var(--neutral-text-inverse);
+  --button-icon-color-hover: var(--neutral-icon-inverse);
+  --button-background-color-hover: var(--mc-purple);
+  text-transform: uppercase; letter-spacing: 0.02em;
+}
+[data-theme="marketing-continuo"] .region-contrast .btn { --button-text-color: var(--mc-cyan); }
+
+/* Card com barra de cor no topo (ciano ou roxo), sobre navy */
+.mc-card { background: var(--mc-navy-raised); color: var(--neutral-text-inverse); border-radius: var(--border-radius-sm); padding: var(--size-spacing-04); border-top: 4px solid var(--mc-cyan); }
+.mc-card--purple { border-top-color: var(--mc-purple); }
+.mc-card h3 { font: 700 16px/22px var(--font-display); margin-bottom: var(--size-spacing-02); }
+.mc-card p { font: var(--text-sm-regular); color: rgba(255, 255, 255, 0.78); }
+
+/* Chip branco com ponto lime (lista de canais) */
+.mc-chip { display: inline-flex; align-items: center; gap: var(--size-spacing-02); height: 28px; padding: 0 var(--size-spacing-03); border-radius: var(--border-radius-pill); background: var(--neutral-surface); color: var(--mc-navy); font: 500 13px/1 var(--font-family); }
+.mc-chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mc-lime); box-shadow: 0 0 0 1px rgba(0, 34, 51, 0.15); }
+
+/* Faixa-rótulo (ex.: "Vendas", "Marketing") */
+.mc-band { display: block; text-align: center; padding: var(--size-spacing-01) var(--size-spacing-04); border-radius: var(--border-radius-xs); font: 700 14px/20px var(--font-display); background: var(--mc-cyan); color: var(--mc-navy); }
+.mc-band--purple { background: var(--mc-purple-deep); color: var(--neutral-text-inverse); }
+
+/* Painel de impacto roxo: só texto grande (>= 24px). Texto pequeno em #A44DFF reprova AA */
+.mc-impact { background: var(--mc-purple); color: var(--neutral-text-inverse); padding: var(--size-spacing-08) var(--size-spacing-06); border-radius: var(--border-radius-lg); position: relative; overflow: hidden; }
+.mc-impact > * { position: relative; }
+.mc-impact::after { content: ""; position: absolute; left: -60px; top: 0; bottom: 0; width: 140px; background: var(--mc-fingerprint-lime); opacity: 0.9; }
+.mc-impact p { font: 300 clamp(24px, 3vw, 34px)/1.15 var(--font-display); padding-left: var(--size-spacing-08); }
+.mc-impact p strong { font-weight: 700; }
+
+/* Resultado do tema: card claro em cinza do guia, insight em faixa roxa profunda */
+[data-theme="marketing-continuo"] .message--primary { background: var(--mc-navy); color: var(--neutral-text-inverse); border-left: 4px solid var(--mc-purple); }
+[data-theme="marketing-continuo"] .message--primary strong { color: var(--mc-cyan); }
+[data-theme="marketing-continuo"] .steps li[aria-current="step"]::before,
+[data-theme="marketing-continuo"] .steps li.is-done::before { background: var(--mc-purple); }
+[data-theme="marketing-continuo"] .data-block__value { font-weight: 800; }
+[data-theme="marketing-continuo"] .tool-footer { background: var(--mc-navy); border-top: 6px solid transparent; border-image: var(--mc-stripes) 6; }

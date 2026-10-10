@@ -1,0 +1,25 @@
+{
+  "slug": "calculadora-roi-marketing",
+  "eyebrow": "Ferramenta gratuita",
+  "title": "Quanto o seu marketing devolve em receita?",
+  "title_highlight": "devolve em receita",
+  "subtitle": "Coloque os números do último trimestre e veja o ROI, o custo por cliente e a meta de leads para crescer com previsibilidade.",
+  "form_title": "Dados do trimestre",
+  "primary_cta": "Calcular meu ROI",
+  "secondary_cta": { "label": "Falar com especialista", "url": "https://www.rdstation.com/contato/" },
+  "privacy_note": "Os cálculos acontecem no seu navegador. Nenhum dado é enviado.",
+  "result_title": "Seu resultado",
+  "inputs": [
+    { "id": "investimento", "label": "Investimento em marketing (R$)", "type": "number", "placeholder": "Ex.: 60000", "help": "Mídia, ferramentas e time no período." },
+    { "id": "clientes", "label": "Novos clientes no período", "type": "number", "placeholder": "Ex.: 40" },
+    { "id": "ticket", "label": "Ticket médio anual (R$)", "type": "number", "placeholder": "Ex.: 12000" },
+    { "id": "conversao", "label": "Taxa de lead para cliente (%)", "type": "number", "placeholder": "Ex.: 2" }
+  ],
+  "outputs": [
+    { "id": "receita", "label": "Receita gerada", "formula": "clientes * ticket", "format": "currency" },
+    { "id": "roi", "label": "ROI", "formula": "((receita - investimento) / investimento) * 100", "format": "percent" },
+    { "id": "cac", "label": "Custo por cliente (CAC)", "formula": "investimento / clientes", "format": "currency" },
+    { "id": "leads", "label": "Leads para dobrar clientes", "formula": "(clientes * 2) / (conversao / 100)", "format": "number" }
+  ],
+  "insight": "Seu marketing teve ROI de ${roi} e CAC de ${cac}. Para dobrar a base, seu funil precisa de ${leads} leads no próximo trimestre."
+}

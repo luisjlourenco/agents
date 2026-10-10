@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="{{THEME}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}} | RD Station</title>
+  <meta name="description" content="{{SUBTITLE}}">
+  <style>
+{{CSS}}
+  </style>
+</head>
+<body>
+
+  <!-- Topbar: logo oficial RD Station on-dark, sempre à esquerda, altura 32px -->
+  <header class="tool-topbar">
+    <a class="brand" href="https://www.rdstation.com/" aria-label="RD Station" title="RD Station">
+{{LOGO_RD_ON_DARK}}
+    </a>
+    <div class="region-contrast" style="background:transparent">
+      <a class="btn" href="{{SECONDARY_CTA_URL}}">{{SECONDARY_CTA_LABEL}}</a>
+    </div>
+  </header>
+
+  <!-- Hero KV: navy + ciano + geometria Tangram -->
+  <section class="hero-kv">
+    <div class="container">
+      <span class="hero-kv__eyebrow">{{EYEBROW}}</span>
+      <h1>{{TITLE_HTML}}</h1>
+      <p>{{SUBTITLE}}</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="tool-panel" aria-labelledby="tool-title">
+      <ol class="steps" aria-label="Etapas">
+        <li aria-current="step">1. Seus dados</li>
+        <li id="step-2">2. Resultado</li>
+      </ol>
+
+      <div class="grid-2" style="margin-top: var(--size-spacing-06)">
+        <form id="tool-form" novalidate>
+          <h2 id="tool-title" class="t-lg" style="margin-bottom: var(--size-spacing-04)">{{FORM_TITLE}}</h2>
+{{FIELDS}}
+          <button type="submit" class="btn btn--fluid">{{PRIMARY_CTA_LABEL}}</button>
+          <p class="form-feedback" style="margin-top: var(--size-spacing-03)">{{PRIVACY_NOTE}}</p>
+        </form>
+
+        <div id="result" aria-live="polite">
+          <div class="card" style="height:100%; display:flex; flex-direction:column; gap: var(--size-spacing-05)">
+            <span class="t-xs t-low">{{RESULT_TITLE}}</span>
+            <div class="grid-2" id="result-kpis">
+{{OUTPUTS}}
+            </div>
+            <div class="message message--primary" id="result-insight" hidden>
+              <div><strong>Leitura da RD Station</strong><span id="insight-text"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="tool-footer" style="margin-top: var(--size-spacing-10)">
+    <div class="container tool-footer__row">
+      <span class="brand" aria-label="RD Station" title="RD Station">
+{{LOGO_RD_ON_DARK}}
+      </span>
+      <span class="endorsement">
+        uma operação
+        <span class="brand" aria-label="TOTVS" title="TOTVS">
+{{LOGO_TOTVS_ON_DARK}}
+        </span>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    // Configuração gerada a partir do manifesto da ferramenta (tools/*.json).
+    const TOOL = {{TOOL_JSON}};
+
+    const fmt = (value, format) => {
+      if (!isFinite(value)) return '—';
+      if (format === 'currency') return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+      if (format === 'percent') return value.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
+      return value.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+    };
+
+    document.getElementById('tool-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const values = {};
+      let valid = true;
+      for (const field of TOOL.inputs) {
+        const el = document.getElementById(field.id);
+        const control = el.closest('.form-control');
+        const raw = el.value.trim();
+        const ok = field.required === false || raw !== '';
+        control.dataset.error = String(!ok);
+        el.setAttribute('aria-invalid', String(!ok));
+        valid = valid && ok;
+        values[field.id] = field.type === 'number' ? Number(raw.replace(',', '.')) : raw;
+      }
+      if (!valid) return;
+
+      // Fórmulas vêm do manifesto, escrito pelo time (conteúdo confiável, não input do visitante).
+      const results = {};
+      for (const out of TOOL.outputs) {
+        const compute = new Function(...Object.keys(values), ...Object.keys(results), 'return (' + out.formula + ');');
+        results[out.id] = compute(...Object.values(values), ...Object.values(results));
+        document.getElementById('out-' + out.id).textContent = fmt(results[out.id], out.format);
+      }
+      if (TOOL.insight) {
+        const insight = new Function(...Object.keys(results), 'return `' + TOOL.insight + '`;');
+        document.getElementById('insight-text').textContent = insight(...Object.values(results).map((v, i) => fmt(v, TOOL.outputs[i].format)));
+        document.getElementById('result-insight').hidden = false;
+      }
+      const first = document.querySelector('.steps li[aria-current]');
+      if (first) { first.removeAttribute('aria-current'); first.classList.add('is-done'); }
+      document.getElementById('step-2').setAttribute('aria-current', 'step');
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+</body>
+</html>
