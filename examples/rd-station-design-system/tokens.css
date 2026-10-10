@@ -1,10 +1,10 @@
 /* ==========================================================================
    RD Kit — tokens.css
-   Camada 1: tokens Tangram (design system oficial da RD Station)
+   Camada 1: tokens de fundação do design system RD Station
    Camada 2: Key Visual (KV) de marca para ferramentas, landing pages e eventos
    --------------------------------------------------------------------------
    Regra: nenhuma ferramenta usa hex solto. Tudo passa por var(--token).
-   Valores marcados com [derivado] não constam da tabela pública do Tangram e
+   Valores marcados com [derivado] não constam da tabela pública de fundações e
    foram definidos aqui para fechar o contrato dos componentes — valide com o
    time de Design antes de usar fora do RD Kit.
    ========================================================================== */
@@ -153,7 +153,7 @@
 
   /* ==========================================================================
      Camada 2 — Key Visual RD Station (site, eventos, ferramentas de mercado)
-     Navy profundo + ciano elétrico + lime de destaque + geometria Tangram.
+     Navy profundo + ciano elétrico + lime de destaque + geometria triangular do KV.
      ========================================================================== */
   --kv-navy-900: #001927;  /* fundo de marca: navbar, heros, slides de impacto */
   --kv-navy-800: #002233;  /* superfície inversa / texto de máxima ênfase */
@@ -161,11 +161,11 @@
   --kv-cyan: #00DBFF;      /* cor-assinatura: logo on-dark, acentos, CTAs on-dark */
   --kv-cyan-soft: #66E9FF;
   --kv-lime: #C3F628;      /* CTA de campanha em região Highlight */
-  --kv-violet-start: #7B4AFF; /* gradiente Tangram (apenas KV/ilustração) */
+  --kv-violet-start: #7B4AFF; /* gradiente violeta (apenas KV/ilustração) */
   --kv-violet-end: #3C10B1;
 
   --kv-gradient-hero: radial-gradient(120% 120% at 85% 0%, #0A3A52 0%, #001927 55%);
-  --kv-gradient-tangram: linear-gradient(135deg, var(--kv-violet-start), var(--kv-violet-end));
+  --kv-gradient-violet: linear-gradient(135deg, var(--kv-violet-start), var(--kv-violet-end));
   --kv-glow-cyan: 0 0 0 1px rgba(0, 219, 255, 0.24), 0 8px 32px rgba(0, 219, 255, 0.16);
 
   /* Logo */
@@ -207,13 +207,13 @@
 
 /* ==========================================================================
    Camada 3 — Endosso TOTVS
-   O logo TOTVS (brand/totvs-logo*.svg) vem do componente Brand do Tangram.
+   O logo TOTVS (brand/totvs-logo*.svg) é o SVG oficial da pasta brand/.
    Paleta e tipografia institucionais da TOTVS: A PREENCHER com os valores
    oficiais de https://marca.totvs.com/identidade-visual/ antes de qualquer
    peça co-branded que vá além do endosso. Não use valores aproximados.
    ========================================================================== */
 :root {
-  --totvs-logo-color: #002233;          /* fill do SVG oficial (Brand Tangram) */
+  --totvs-logo-color: #002233;          /* fill do SVG oficial */
   --totvs-logo-color-on-dark: #FFFFFF;
   --endorsement-label: "uma operação";  /* assinatura usada nos materiais RD Station */
 }

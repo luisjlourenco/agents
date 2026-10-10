@@ -1,6 +1,6 @@
 # RD Kit: design system para ferramentas RD Station em escala
 
-Kit para produzir calculadoras, diagnósticos, dashboards e páginas de evento com a mesma identidade visual da RD Station (uma operação TOTVS). É operado pelo agente [RD Station UI Designer](../../design/design-rd-station-ui-designer.md).
+Kit para produzir calculadoras, diagnósticos, dashboards e páginas de evento com a mesma identidade visual da RD Station (uma operação TOTVS). O guia visual completo está em [`GUIDELINES.md`](GUIDELINES.md). As regras de operação estão em [`SKILL.md`](SKILL.md).
 
 **Princípio:** uma ferramenta nova é um manifesto JSON, não um HTML novo. O visual vem do sistema, então a centésima ferramenta sai tão fiel à marca quanto a primeira.
 
@@ -20,16 +20,16 @@ Só usa a biblioteca padrão do Python 3. A saída é um arquivo HTML único, co
 
 | Camada | Arquivo | O que define |
 |---|---|---|
-| 1. Tokens Tangram | `tokens.css` | Cores primárias, neutras, funcionais e de suporte; DM Sans; grid de 8px; raios; elevação; z-index; motion |
-| 2. Key Visual | `tokens.css` (`--kv-*`) | Navy `#001927`, ciano `#00DBFF`, lime `#C3F628`, gradiente violeta Tangram, hero radial |
+| 1. Tokens de fundação | `tokens.css` | Cores primárias, neutras, funcionais e de suporte; DM Sans; grid de 8px; raios; elevação; z-index; motion |
+| 2. Key Visual | `tokens.css` (`--kv-*`) | Navy `#001927`, ciano `#00DBFF`, lime `#C3F628`, gradiente violeta, hero radial |
 | 2b. Endosso TOTVS | `tokens.css` (`--totvs-*`) | Logo e assinatura "uma operação TOTVS". Paleta institucional pendente (ver abaixo) |
 | 2c. Tema Marketing Contínuo | `tokens.css` (`[data-theme="marketing-continuo"]`) | Red Hat Display + Inter Tight, navy `#002233`, roxo `#A44DFF`/`#7B2FFF`, ciano `#00DBFF`, lime `#D9FC68`, listras e digital |
 | 3. Componentes | `components.css` | Button (região × kind), Input, Card, DataBlock, Tag, Badge, Alert, Message, Toast, Table, Steps, Skeleton |
 | 4. Padrões | `components.css` | Shell do produto logado, topbar, hero KV, painel sobreposto, rodapé com endosso TOTVS |
-| 5. Marca | `brand/` | Logos oficiais, extraídos do componente Brand do Tangram |
+| 5. Marca | `brand/` | Logos oficiais: RD Station, produtos RD Station e TOTVS |
 | 6. Produção | `templates/`, `tools/`, `generate.py` | Template com placeholders, manifestos e gerador |
 
-Tokens marcados `[derivado]` em `tokens.css` não constam da tabela pública do Tangram (ex.: curvas de sombra, hover do botão primário). Valide com o time de Design antes de usar fora do kit.
+Tokens marcados `[derivado]` em `tokens.css` não constam da tabela pública de fundações (ex.: curvas de sombra, hover do botão primário). Valide com o time de Design antes de usar fora do kit.
 
 ## Logo oficial
 
@@ -37,9 +37,10 @@ Tokens marcados `[derivado]` em `tokens.css` não constam da tabela pública do 
 |---|---|
 | Claro (branco, cinza) | `brand/rd-station-logo.svg` (navy `#002233`) |
 | Navy ou escuro | `brand/rd-station-logo-on-dark.svg` (branco) |
-| Navbar do produto logado | `brand/rd-station-logo-cyan.svg` (ciano `#00DBFF`), só no shell Tangram |
+| Navbar do produto logado | `brand/rd-station-logo-cyan.svg` (ciano `#00DBFF`), só na navbar do produto |
 | Endosso TOTVS, claro | `brand/totvs-logo.svg` |
 | Endosso TOTVS, escuro | `brand/totvs-logo-on-dark.svg` |
+| Produtos (Marketing, Ecommerce, CRM, Conversas, Mentor IA, Billing, App Store) | `brand/rd-station-<produto>-logo.svg` e `-on-dark.svg` |
 
 - Altura de 32px (mínimo de 20px em endosso), com 16px de respiro.
 - Nunca redesenhar, esticar, recolorir fora dessas versões, aplicar efeito ou trocar o RD Station pelo logo TOTVS.
@@ -65,7 +66,7 @@ Regras do tema Marketing Contínuo, extraídas do guia visual oficial:
 O ambiente em que este kit foi montado não teve acesso de rede a `marca.totvs.com`, `rdstation.com` nem ao brand system no zeroheight. Por isso:
 
 - **A paleta e a tipografia institucionais da TOTVS ainda não estão no kit.** A TOTVS aparece só como logo de endosso. Antes de peças co-branded, registre os valores oficiais na camada 2b.
-- **Os tokens do site e do brand system** vêm do Tangram e do guia Marketing Contínuo. Confira contra o zeroheight e ajuste os itens `[derivado]`.
+- **Os tokens do site e do brand system** vêm das fundações do design system RD Station e do guia Marketing Contínuo. Confira contra o zeroheight e ajuste os itens `[derivado]`.
 
 ## Manifesto de ferramenta
 
@@ -96,7 +97,6 @@ As fórmulas rodam no navegador. Elas são escritas pelo time (conteúdo confiá
 
 ## Fontes
 
-- Tangram Design System: https://tangram.rdstation.com.br
+- Guia visual completo deste kit: `GUIDELINES.md`
 - Guia visual "Marketing Contínuo: Tudo sobre a Disciplina de Crescimento" (cores amostradas do PDF oficial)
 - A validar: https://marca.totvs.com/identidade-visual/ · https://www.rdstation.com/ · https://zeroheight.com/8b3388065/p/61eb76-brand-system-rd-station
-- Repositório Tangram: https://github.com/ResultadosDigitais/tangram

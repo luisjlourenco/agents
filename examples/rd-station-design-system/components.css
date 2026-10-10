@@ -1,6 +1,6 @@
 /* ==========================================================================
    RD Kit — components.css
-   Componentes Tangram em CSS puro + padrões de ferramenta (shell, hero, KV).
+   Componentes do design system RD Station em CSS puro + padrões de ferramenta (shell, hero, KV).
    Depende de tokens.css. Sem framework, sem build: copie e use.
    ========================================================================== */
 
@@ -312,7 +312,7 @@ body {
    PADRÕES DE FERRAMENTA
    ========================================================================== */
 
-/* ---------- App shell (produto logado) — espelha o template canônico Tangram ---------- */
+/* ---------- App shell (produto logado) — espelha o shell canônico do produto RD Station ---------- */
 .layout { display: grid; grid-template-rows: 64px 1fr; grid-template-columns: 64px 1fr; grid-template-areas: "navbar navbar" "sidebar content"; height: 100vh; background: var(--kv-navy-900); }
 .navbar { grid-area: navbar; display: flex; align-items: center; justify-content: space-between; padding: var(--size-spacing-03); background: var(--kv-navy-900); color: var(--neutral-text-inverse); z-index: var(--zindex-2); }
 .sidebar { grid-area: sidebar; display: flex; flex-direction: column; align-items: center; gap: var(--size-spacing-02); padding-top: var(--size-spacing-03); background: var(--kv-navy-900); }
@@ -338,7 +338,7 @@ body {
 .hero-kv h1 { font: var(--text-xxl-extrabold); font-size: clamp(32px, 5vw, 56px); line-height: 1.1; letter-spacing: var(--letter-spacing-xxl); max-width: 16ch; margin: var(--size-spacing-03) 0 var(--size-spacing-04); }
 .hero-kv h1 em { font-style: normal; color: var(--kv-cyan); }
 .hero-kv p { font: var(--text-lg-regular); color: rgba(255, 255, 255, 0.78); max-width: 52ch; }
-/* Geometria Tangram: peças triangulares como textura de KV, nunca sobre texto */
+/* Geometria triangular do KV: peças triangulares como textura de KV, nunca sobre texto */
 .hero-kv::after {
   content: ""; position: absolute; z-index: -1; right: -80px; top: -40px;
   width: 420px; height: 420px; opacity: 0.9;
