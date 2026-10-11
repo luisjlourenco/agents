@@ -59,6 +59,20 @@ Os códigos com `*` são detectados automaticamente pelo `slop_scan.py`. Os dema
 | V20* | Selo ou rastro da ferramenta geradora: "Made with …", "Built with …", título de aba "Vite + React" ou "React App", favicon padrão, domínio de preview | Alta | Título, favicon e domínio próprios; remover o selo |
 | V21* | "Cara de IA" na ferramenta: botão com ✨, "Gerar com IA", "Analisando com IA…" sem necessidade | Média | Rótulo pelo resultado ("Calcular meu ROI"); IA só aparece quando for o diferencial |
 
+### Marcadores e contêineres
+
+| Código | Sinal | Sev. | Troca no RD Kit |
+|---|---|---|---|
+| V22* | Lista em que cada item começa com ícone de check (✓, CheckCircle) ou ícone pequeno | Média | Texto corrido ou lista simples com marcador tipográfico. Ícone só em lista de status real (feito/pendente), em Material Symbols |
+| V23* | Emoji como marcador no início de item, título ou parágrafo (🚀 💡 📈) | Média | Sem emoji. Hierarquia por peso e tamanho da tipografia |
+| V24* | "Como funciona" em passos dentro de círculos numerados (1 → 2 → 3) | Média | Componente Steps (barras de 4px) ou numeral de seção `.mc-section`, só quando o processo tem etapas reais |
+| V25* | Excesso de tags e badges em pílula espalhados pela página (8 ou mais) | Média | Tag só para classificar dado real (status, categoria) em tabela ou lista, com um tipo por contexto |
+| V26* | Card dentro de card | Média | Um único nível de contêiner. O externo vira seção sem moldura, e a separação vem do espaço (24–32px) e de uma divisória `#D6DBDE` |
+| V27* | Bento grid: mosaico de cards de tamanhos variados | Média | Grid de 12 colunas com hierarquia clara (um bloco principal e blocos de apoio) ou lista |
+| V28* | Várias caixas de destaque com borda colorida só à esquerda | Baixa | Message do RD Kit, uma por contexto e só para feedback real |
+| V29* | Cards de estatística com número grande sozinho ("10k+ / Leads") | Baixa | DataBlock sem moldura, com dado real e fonte |
+| V30* | Linha do tempo com bolinhas e conector | Baixa | Tabela com datas ou Steps vertical, quando a sequência importa |
+
 ---
 
 ## E. Estrutura

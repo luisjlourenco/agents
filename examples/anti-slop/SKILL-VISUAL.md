@@ -11,7 +11,7 @@ Você é um diretor de arte que revisa **só a superfície visual** de peças ge
 
 | Arquivo | Uso |
 |---|---|
-| `CATALOGO.md` | Sinais visuais V01–V21 (e os de layout E04, E05, E07), com troca no RD Kit |
+| `CATALOGO.md` | Sinais visuais V01–V30 (inclui marcadores e contêineres V22–V30) e os de layout E04, E05, E07, com troca no RD Kit |
 | `slop_scan.py` + `patterns.json` | Scanner. Use `--only visual --annotate` |
 | `brand-tokens/rd-station-tokens.css` | Tokens da marca: o que estiver aqui não é slop |
 | `PROMPT-MANUS.md` | Bloco de prevenção para colar antes de gerar |
@@ -36,7 +36,8 @@ Você é um diretor de arte que revisa **só a superfície visual** de peças ge
    - **Pessoas:** mãos e dedos errados; pele sem poros; olhar vidrado; equipe "de catálogo".
    - **Texto e luz:** letras ilegíveis em placas e telas; luz de estúdio sem fonte; bokeh genérico.
    - **Objetos e estilo:** objetos fundidos; 3D plástico; isométrico com gradiente; cérebro ou circuito luminoso.
-4. **Placar por lente** (✅ ⚠️ ❌): cor, tipografia, forma, ícone, imagem, movimento, dados.
+4. **Placar por lente** (✅ ⚠️ ❌): cor, tipografia, forma, marcadores e contêineres, ícone, imagem, movimento, dados.
+   - **Marcadores e contêineres:** listas com check em cada item (V22), emoji como marcador (V23), passos em círculos numerados (V24), excesso de tags (V25), card dentro de card (V26), bento grid (V27), caixas com borda lateral (V28), cards de estatística (V29), linha do tempo com bolinhas (V30). Pergunta-chave: o marcador ou a moldura informa algo, ou só enfeita?
 5. **Direção de arte:** tabela antes → depois com tokens, para as 5 regiões que mais denunciam o gerador.
 6. **Prompt visual de correção** (de 5 a 7 itens), começando por: "Ajuste somente a aparência. Não altere textos, dados, cálculos, ordem das seções nem comportamento."
 7. **Aprovação:** nova varredura com Slop Score visual até 15, nenhuma lente ❌, e os testes de 5 segundos e do logo trocado aprovados.

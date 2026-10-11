@@ -9,7 +9,7 @@ import zipfile
 from pathlib import Path
 
 KIT = Path(__file__).resolve().parent
-COMMON = ["CATALOGO.md", "PROMPT-MANUS.md", "README.md", "slop_scan.py", "patterns.json", "fixtures/slop-landing.html"]
+COMMON = ["CATALOGO.md", "PROMPT-MANUS.md", "README.md", "slop_scan.py", "patterns.json", "fixtures/slop-landing.html", "fixtures/slop-markers.html"]
 PACKAGES = {
     "anti-slop-reviewer": "SKILL.md",
     "visual-slop-reviewer": "SKILL-VISUAL.md",

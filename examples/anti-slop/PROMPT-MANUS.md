@@ -17,6 +17,7 @@ Proibido:
 - Pílula ou badge acima do título ("✨ Novo…"). Headline gigante centralizada.
 - Grade de 3 ou 4 cards de feature idênticos com ícone em quadrado colorido. Ícones Lucide genéricos (Sparkles, Zap, Rocket, Shield). Emoji como ícone ou em títulos.
 - Hover que levanta todos os cards; animação de entrada em todas as seções.
+- Listas com ícone de check em cada item, emoji como marcador, passos em círculos numerados, tags e badges espalhados, card dentro de card, bento grid, caixas com borda colorida à esquerda, cards de estatística e linha do tempo com bolinhas. Prefira texto corrido, listas simples e um único nível de contêiner.
 - Imagens geradas por IA, avatares placeholder, logos fictícios, mockup de dashboard inventado.
 - Sequência padrão de landing (logos, features, como funciona em 3 passos, depoimentos, 3 planos, FAQ, banner final). Inclua só as seções com conteúdo real que eu fornecer.
 - Estatísticas redondas ("10k+", "99,9%", "24/7"), depoimentos de 5 estrelas e qualquer número sem fonte.

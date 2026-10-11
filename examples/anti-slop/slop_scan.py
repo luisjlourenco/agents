@@ -37,7 +37,9 @@ TITLES = {
     "V11": "Cardificação", "V12": "Grade de cards de feature idênticos", "V13": "Ícones genéricos (Lucide/emoji)",
     "V14": "Hover que levanta tudo / transition: all", "V15": "Animação de entrada em toda seção",
     "V17": "Imagens placeholder ou logos fictícios", "V19": "Dashboard e gráfico padrão", "V20": "Rastro da ferramenta geradora",
-    "V21": "Cara de IA na interface", "E01": "Sequência canônica de landing de IA", "E02": "Linha de estatísticas redondas",
+    "V21": "Cara de IA na interface", "V22": "Lista com ícone em cada item", "V23": "Emoji como marcador",
+    "V24": "Passos em círculos numerados", "V25": "Excesso de tags e badges", "V26": "Card dentro de card",
+    "V27": "Bento grid", "V28": "Caixas de destaque com borda lateral", "V29": "Cards de estatística", "V30": "Linha do tempo com bolinhas", "E01": "Sequência canônica de landing de IA", "E02": "Linha de estatísticas redondas",
     "E03": "Depoimentos genéricos 5 estrelas", "E04": "Hero com primário + 'Saiba mais'", "E06": "Rodapé genérico",
     "T01": "Verbos de hype", "T02": "Promessa vazia", "T03": "'Não é apenas X, é Y'", "T05": "Excesso de travessões",
     "T06": "Emoji em títulos e marcadores", "T07": "Title Case em português", "T08": "CTA genérico",
@@ -99,6 +101,62 @@ COLLECT_JS = r"""
       if (sameW && sameH && rowish && iconTitle && rs[0].width > 140) { out.featureGrids.push({ n: kids.length, sample: kids[0].innerText.trim().slice(0, 80) }); out.marks.push({ kind: 'featureGrid', ...box(r) }); }
     }
   }
+  // ---- Marcadores e contêineres (V22–V30): segunda passada sobre os elementos visíveis ----
+  const visEls = all.filter(vis);
+  const txt = e => (e && typeof e.innerText === 'string' ? e.innerText : (e && e.textContent) || '');
+  const opaque = s => !!rgb2hex(s.backgroundColor);
+  const sat = c => { const m = c && c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/); if (!m) return 0; const v = [+m[1], +m[2], +m[3]]; return Math.max(...v) - Math.min(...v); };
+  const directText = el => Array.from(el.childNodes).filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
+  const isCard = el => { const s = getComputedStyle(el), r = el.getBoundingClientRect();
+    return parseFloat(s.borderTopLeftRadius) >= 8 && (parseFloat(s.borderTopWidth) > 0 || s.boxShadow !== 'none') && opaque(s) && r.width > 80 && r.height > 48; };
+  const cards = new Set(visEls.filter(isCard));
+  Object.assign(out, { checkLists: [], emojiMarkers: [], numCircles: [], tags: [], nested: [], bento: [], callouts: [], statCards: [], dots: [] });
+  const CHECK = /^[✓✔✅☑•●▸→➜]/;
+  const EMO = /^[\u{1F300}-\u{1FAFF}\u2600-\u2604\u2607-\u2712\u2715-\u27BF\u2B50]/u;  // ✓ ✔ ficam com o V22
+  for (const el of visEls) {
+    const s = getComputedStyle(el), r = el.getBoundingClientRect(), dt = directText(el);
+    // V22: lista em que cada item começa com ícone pequeno ou caractere de check
+    const kids = Array.from(el.children).filter(vis);
+    if (kids.length >= 3 && !cards.has(el)) {
+      const marked = kids.filter(k => { const kr = k.getBoundingClientRect(); if (kr.height > 72) return false;
+        const first = k.firstElementChild; const fr = first && first.getBoundingClientRect();
+        const iconFirst = first && /^(svg|img|i)$/i.test(first.tagName) && fr.width <= 28 && fr.height <= 28;
+        const iconWrap = first && fr.width <= 36 && fr.height <= 36 && first.querySelector('svg') && !txt(first).trim();
+        return iconFirst || iconWrap || CHECK.test(txt(k).trim()); });
+      if (marked.length >= 3 && marked.length >= kids.length * 0.6) out.checkLists.push({ n: marked.length, sample: txt(marked[0]).trim().slice(0, 60), ...box(r) });
+    }
+    // V23: emoji como marcador no início de item, título ou parágrafo
+    if (/^(LI|H3|H4|H5|P|DT|SPAN|DIV)$/.test(el.tagName) && EMO.test(dt || '') ) out.emojiMarkers.push({ text: dt.slice(0, 50), ...box(r) });
+    // V24: círculo com número de etapa
+    if (/^\d{1,2}$/.test(txt(el).trim()) && el.children.length <= 1 && r.width >= 24 && r.width <= 72 && Math.abs(r.width - r.height) < 4
+        && parseFloat(s.borderTopLeftRadius) >= r.width / 2 - 1 && (opaque(s) || parseFloat(s.borderTopWidth) > 0))
+      out.numCircles.push({ n: +txt(el).trim(), ...box(r) });
+    // V25: tags e badges em pílula (fora de botões e links)
+    if (dt && !/^(A|BUTTON|INPUT|LABEL)$/.test(el.tagName) && r.height >= 16 && r.height <= 34 && r.width < 260
+        && parseFloat(s.borderTopLeftRadius) >= r.height / 2 - 1 && dt.split(/\s+/).length <= 4 && (opaque(s) || parseFloat(s.borderTopWidth) > 0))
+      out.tags.push({ text: dt.slice(0, 40), ...box(r) });
+    // V28: caixa de destaque com borda colorida só à esquerda
+    if (parseFloat(s.borderLeftWidth) >= 3 && parseFloat(s.borderTopWidth) === 0 && parseFloat(s.borderRightWidth) === 0 && sat(s.borderLeftColor) > 60 && r.height > 32)
+      out.callouts.push({ ...box(r) });
+    // V30: bolinhas de linha do tempo
+    if (!el.children.length && !txt(el).trim() && r.width >= 6 && r.width <= 20 && Math.abs(r.width - r.height) < 2
+        && parseFloat(s.borderTopLeftRadius) >= r.width / 2 - 1 && (opaque(s) || parseFloat(s.borderTopWidth) > 0))
+      out.dots.push({ ...box(r) });
+    // V27: bento grid (grid de cards com tamanhos diferentes)
+    if (s.display.includes('grid') && kids.length >= 4 && kids.every(k => cards.has(k))) {
+      const rs = kids.map(k => k.getBoundingClientRect());
+      const ws = new Set(rs.map(x => Math.round(x.width / 40))), hs = new Set(rs.map(x => Math.round(x.height / 40)));
+      if (ws.size >= 2 || hs.size >= 2) out.bento.push({ n: kids.length, ...box(r) });
+    }
+  }
+  for (const c of cards) {
+    // V26: card dentro de card
+    let p = c.parentElement;
+    while (p && p !== document.body) { if (cards.has(p)) { out.nested.push({ ...box(c.getBoundingClientRect()) }); break; } p = p.parentElement; }
+    // V29: card de estatística (número grande sozinho no card)
+    const big = Array.from(c.querySelectorAll('*')).find(e => parseFloat(getComputedStyle(e).fontSize) >= 28 && /^[\d.,+%kKmMxX\s/$R]{1,9}$/.test(txt(e).trim()) && /\d/.test(txt(e)));
+    if (big && txt(c).trim().split(/\s+/).length <= 8) out.statCards.push({ value: txt(big).trim(), ...box(c.getBoundingClientRect()) });
+  }
   for (const sh of Array.from(document.styleSheets)) {
     let rules; try { rules = sh.cssRules; } catch (e) { continue; }
     for (const rule of Array.from(rules || [])) {
@@ -127,7 +185,7 @@ OVERLAY_JS = r"""
     b.style.cssText = `position:absolute;left:${Math.max(0, m.x)}px;top:${Math.max(24, m.y)}px;width:${Math.max(m.w, 18)}px;height:${Math.max(m.h, 18)}px;` +
       'outline:3px solid #E60F57;outline-offset:2px;background:rgba(230,15,87,.07);box-sizing:border-box';
     const t = document.createElement('span');
-    t.textContent = m.label;
+    t.textContent = m.w < 140 ? m.label.split(' ')[0] : m.label;  // caixa pequena: só o código
     t.style.cssText = (m.w > 600 ? 'right:-3px;' : 'left:-3px;') + 'position:absolute;top:-24px;background:#E60F57;color:#fff;font:700 12px/16px system-ui,sans-serif;padding:3px 6px;border-radius:4px;white-space:nowrap';
     b.appendChild(t); root.appendChild(b);
   }
@@ -163,6 +221,11 @@ def visual_marks(data, findings, pat):
     for code, match in rules.items():
         if code in codes:
             marks += [dict(m, label=f"{code} {TITLES[code]}") for m in data.get("marks", []) if match(m)][:6]
+    extra = {"V22": "checkLists", "V23": "emojiMarkers", "V24": "numCircles", "V25": "tags", "V26": "nested",
+             "V27": "bento", "V28": "callouts", "V29": "statCards", "V30": "dots"}
+    for code, key in extra.items():
+        if code in codes:
+            marks += [dict(m, label=f"{code} {TITLES[code]}") for m in data.get(key, [])][:8]
     if "V17" in codes:
         marks += [dict(i, label=f"V17 {TITLES['V17']}") for i in data.get("imgs", [])
                   if any(h in i["src"] for h in pat["placeholder_image_hosts"])][:6]
@@ -347,6 +410,32 @@ def analyze(d, pat, allowed_colors, allowed_fonts):
     ai_ui = [l for l in pat["ai_ui_labels"] if l in " ".join(b["text"].lower() for b in d["buttons"]) or (l != "✨" and l in low)]
     if ai_ui:
         hit("V21", "media", "Rótulos de IA na interface: " + ", ".join(ai_ui))
+
+    # --- Visual: marcadores e contêineres (só modo renderizado) ---
+    cl = d.get("checkLists", [])
+    if len(cl) >= 2 or sum(c["n"] for c in cl) >= 6:
+        hit("V22", "media", f"{len(cl)} lista(s) com ícone em cada item ({sum(c['n'] for c in cl)} itens). Ex.: \"{cl[0]['sample']}\"")
+    em = d.get("emojiMarkers", [])
+    if len(em) >= 3:
+        hit("V23", "media", f"{len(em)} item(ns) começando com emoji. Ex.: \"{em[0]['text']}\"")
+    nums = sorted({c["n"] for c in d.get("numCircles", [])})
+    if len(nums) >= 3 and nums[:3] == [1, 2, 3]:
+        hit("V24", "media", f"{len(d['numCircles'])} círculo(s) numerados ({', '.join(map(str, nums[:6]))})")
+    tags = d.get("tags", [])
+    if len(tags) >= 8:
+        hit("V25", "media", f"{len(tags)} tags/badges em pílula. Ex.: " + ", ".join(dict.fromkeys(t["text"] for t in tags[:5])))
+    if len(d.get("nested", [])) >= 2:
+        hit("V26", "media", f"{len(d['nested'])} card(s) dentro de outro card")
+    if d.get("bento"):
+        hit("V27", "media", f"{len(d['bento'])} grade(s) bento com {d['bento'][0]['n']} cards de tamanhos variados")
+    if len(d.get("callouts", [])) >= 3:
+        hit("V28", "baixa", f"{len(d['callouts'])} caixas com borda colorida só à esquerda")
+    if len(d.get("statCards", [])) >= 3:
+        hit("V29", "baixa", f"{len(d['statCards'])} cards de estatística: " + ", ".join(c["value"] for c in d["statCards"][:5]))
+    dots = d.get("dots", [])
+    cols = Counter(round(x["x"] / 6) for x in dots)
+    if cols and cols.most_common(1)[0][1] >= 3:
+        hit("V30", "baixa", f"{cols.most_common(1)[0][1]} bolinhas alinhadas verticalmente (linha do tempo)")
 
     # --- Estrutura ---
     blocks = {

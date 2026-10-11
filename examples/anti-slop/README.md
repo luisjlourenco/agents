@@ -29,6 +29,7 @@ python3 slop_scan.py https://minha-ferramenta.manus.space \
 | `patterns.json` | Listas editáveis: cores Tailwind, fontes genéricas, frases, CTAs, rastros de geradores |
 | `PROMPT-MANUS.md` | Bloco de prevenção para colar antes de gerar e modelo de prompt de correção |
 | `fixtures/slop-landing.html` | Página com slop proposital, para testar o scanner |
+| `fixtures/slop-markers.html` | Página com marcadores e contêineres de IA (V22–V30), para testar o scanner |
 | `SKILL.md` / `SKILL-VISUAL.md` | Instruções das skills para o Manus (revisor geral e revisor visual) |
 | `package_manus.py` | Gera os dois `.zip` de skill para o Manus |
 
@@ -40,6 +41,7 @@ python3 slop_scan.py https://minha-ferramenta.manus.space \
 | RD Kit `dist/calculadora-roi-marketing.html` | renderizado | 0/100 (Autoral) |
 | RD Kit `dist/potencial-da-base-marketing-continuo.html` | renderizado | 0/100 (Autoral) |
 | `fixtures/slop-landing.html` com `--only visual` | renderizado | 100/100, 16 sinais visuais marcados na captura |
+| `fixtures/slop-markers.html` com `--only visual` | renderizado | 46/100: os 9 sinais V22–V30, mais paleta e fonte genéricas |
 
 ## Limites
 
