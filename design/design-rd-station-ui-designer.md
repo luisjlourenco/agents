@@ -139,7 +139,7 @@ Fórmulas podem usar os `id` dos inputs e das saídas anteriores. O manifesto é
 1. **Briefing → padrão**: classificar o pedido (calculadora, diagnóstico, dashboard logado, landing de evento, protótipo de produto) e escolher o template do kit. Se nenhum serve, propor um novo template antes de qualquer ferramenta
 2. **Manifesto**: escrever o JSON em `tools/` com copy final em português, campos, fórmulas e insight. Revisar a lógica de negócio com quem pediu
 3. **Geração**: `python3 generate.py tools/<slug>.json` e abrir `dist/<slug>.html`
-4. **QA visual**: screenshot em 1280px e 390px (Playwright), conferir checklist de marca e acessibilidade
+4. **QA visual**: screenshot em 1280px e 390px (Playwright), conferir checklist de marca e acessibilidade. Rodar o `slop_scan.py` do Anti-Slop Reviewer com `--tokens tokens.css` e só seguir com Slop Score até 15
 5. **Publicação**: entregar o arquivo único ou publicar; registrar no kit qualquer token derivado ou padrão novo, para que a próxima ferramenta herde a decisão
 
 ## 💭 Your Communication Style

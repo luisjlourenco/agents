@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vite + React</title>
+<!-- Fixture de teste: reproduz de propósito o "SaaS genérico" gerado por IA. Não use como referência de design. -->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, system-ui, sans-serif; color: #0f172a; background: #f8fafc; }
+  .hero { position: relative; overflow: hidden; text-align: center; padding: 120px 24px 96px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%); color: #fff; }
+  .blob { position: absolute; width: 380px; height: 380px; border-radius: 50%; background: #a855f7; filter: blur(80px); opacity: .5; top: -80px; left: -60px; }
+  .pill { display: inline-block; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.15); font-size: 14px; backdrop-filter: blur(8px); }
+  h1 { font-size: 64px; letter-spacing: -0.03em; line-height: 1.05; margin: 20px auto; max-width: 900px; text-align: center; }
+  .grad { background: linear-gradient(90deg, #f0abfc, #818cf8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { font-size: 20px; max-width: 640px; margin: 0 auto 32px; opacity: .9; }
+  .btn { display: inline-block; padding: 14px 28px; border-radius: 12px; font-weight: 600; text-decoration: none; margin: 0 6px; transition: all .3s; }
+  .btn-primary { background: #fff; color: #4f46e5; }
+  .btn-ghost { border: 1px solid rgba(255,255,255,.5); color: #fff; }
+  section { padding: 96px 24px; max-width: 1120px; margin: 0 auto; text-align: center; }
+  h2 { font-size: 40px; margin-bottom: 16px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; text-align: left; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; box-shadow: 0 1px 3px rgba(15,23,42,.08); transition: all .3s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(15,23,42,.12); }
+  .icon { width: 48px; height: 48px; border-radius: 12px; background: #eef2ff; display: grid; place-items: center; margin-bottom: 16px; }
+  .icon svg { width: 24px; height: 24px; stroke: #6366f1; fill: none; stroke-width: 2; }
+  .stats { display: flex; justify-content: center; gap: 64px; font-size: 40px; font-weight: 800; color: #4f46e5; }
+  .stats small { display: block; font-size: 14px; color: #64748b; font-weight: 500; }
+  .stars { color: #f59e0b; }
+  .popular { border: 2px solid #7c3aed; }
+  .cta { background: linear-gradient(90deg, #6366f1, #a855f7); color: #fff; border-radius: 24px; }
+  footer { padding: 48px 24px; background: #0f172a; color: #94a3b8; text-align: center; font-size: 14px; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  .fade-in { animation: fadeInUp .6s ease both; }
+  @media (max-width: 760px) { .grid3 { grid-template-columns: 1fr; } h1 { font-size: 40px; } .stats { flex-direction: column; gap: 24px; } }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="blob"></div>
+    <span class="pill">✨ Novo: IA integrada ao seu fluxo</span>
+    <h1>Transforme Seu Marketing com <span class="grad">Inteligência Artificial</span></h1>
+    <p>A solução completa para potencializar seus resultados — tudo o que você precisa em um só lugar, de forma simples e rápida.</p>
+    <a class="btn btn-primary" href="#">Comece agora</a>
+    <a class="btn btn-ghost" href="#">Saiba mais</a>
+  </header>
+
+  <section class="fade-in">
+    <p>Empresas que confiam em nós: Acme · Globex · Initech · Hooli</p>
+  </section>
+
+  <section class="fade-in">
+    <h2>Nossos Recursos Incríveis</h2>
+    <p>Não é apenas uma ferramenta, é uma revolução na forma como você trabalha.</p>
+    <div class="grid3">
+      <div class="card"><div class="icon"><svg class="lucide lucide-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Rápido Como Um Raio</h3><p>Automatize tarefas e economize horas todos os dias.</p></div>
+      <div class="card"><div class="icon"><svg class="lucide lucide-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Segurança De Ponta</h3><p>Seus dados protegidos com tecnologia robusta.</p></div>
+      <div class="card"><div class="icon"><svg class="lucide lucide-sparkles" viewBox="0 0 24 24"><path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg></div><h3>Insights Com IA</h3><p>Insights acionáveis para decisões mais inteligentes.</p></div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Como Funciona</h2>
+    <p>Em 3 passos simples você eleva seu negócio ao próximo nível.</p>
+  </section>
+
+  <section class="fade-in">
+    <div class="stats"><div>10k+<small>Clientes</small></div><div>99,9%<small>Uptime</small></div><div>24/7<small>Suporte</small></div><div>10x<small>Mais produtividade</small></div></div>
+  </section>
+
+  <section class="fade-in">
+    <h2>O Que Dizem Nossos Clientes</h2>
+    <div class="grid3">
+      <div class="card"><p class="stars">★★★★★</p><img src="https://i.pravatar.cc/80?img=1" alt=""><p>"Mudou completamente nossa operação. Recomendo!"</p><p>Maria Silva, CEO da Acme</p></div>
+      <div class="card"><p class="stars">★★★★★</p><img src="https://i.pravatar.cc/80?img=2" alt=""><p>"Ferramenta incrível, sem esforço nenhum."</p><p>João Souza, CMO da Globex</p></div>
+      <div class="card"><p class="stars">★★★★★</p><img src="https://i.pravatar.cc/80?img=3" alt=""><p>"Nosso ROI cresceu 300% em dois meses."</p><p>Ana Lima, Head da Initech</p></div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Planos E Preços</h2>
+    <div class="grid3">
+      <div class="card"><h3>Básico</h3><p>R$ 49/mês para pequenos times que querem começar.</p></div>
+      <div class="card popular"><h3>Pro · Mais popular</h3><p>R$ 99/mês para empresas em crescimento acelerado.</p></div>
+      <div class="card"><h3>Enterprise</h3><p>Sob consulta para operações robustas e complexas.</p></div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Perguntas Frequentes</h2>
+    <p>No cenário atual, mais do que nunca, sua empresa precisa estar preparada.</p>
+  </section>
+
+  <section class="cta fade-in">
+    <h2>Pronto Para Transformar Seu Negócio? 🚀</h2>
+    <a class="btn btn-primary" href="#">Get started</a>
+  </section>
+
+  <footer>© 2024 IA Marketing. Todos os direitos reservados. · Made with Manus</footer>
+</body>
+</html>

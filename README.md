@@ -199,6 +199,7 @@ Making it beautiful, usable, and delightful.
 |-------|-----------|-------------|
 | 🎯 [UI Designer](design/design-ui-designer.md) | Visual design, component libraries, design systems | Interface creation, brand consistency, component design |
 | 🔷 [RD Station UI Designer](design/design-rd-station-ui-designer.md) | Tangram design system, RD Station/TOTVS Key Visual, mass-produced tools | Calculators, dashboards and event pages on-brand with the official RD Station logo |
+| 🧹 [Anti-Slop Reviewer](design/design-anti-slop-reviewer.md) | AI-generated UI/copy tells, Slop Score scanner, fix prompts | Reviewing Manus/Claude/v0-built sites and tools before they ship |
 | 🔍 [UX Researcher](design/design-ux-researcher.md) | User testing, behavior analysis, research | Understanding users, usability testing, design insights |
 | 🏛️ [UX Architect](design/design-ux-architect.md) | Technical architecture, CSS systems, implementation | Developer-friendly foundations, implementation guidance |
 | 🎭 [Brand Guardian](design/design-brand-guardian.md) | Brand identity, consistency, positioning | Brand strategy, identity development, guidelines |
