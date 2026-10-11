@@ -6,6 +6,7 @@ Uso:
     python3 slop_scan.py pagina.html --tokens ../rd-station-design-system/tokens.css
     python3 slop_scan.py URL --json relatorio.json --screenshot captura.png
     python3 slop_scan.py URL --static        # sem navegador: só analisa o HTML bruto
+    python3 slop_scan.py URL --only visual --annotate anotado.png   # revisor visual
 
 Modo renderizado (padrão) usa Playwright e mede o que o visitante vê: cores
 computadas, fontes, gradientes, blur, grids de cards, hover, textos. Sites em
@@ -35,7 +36,7 @@ TITLES = {
     "V08": "Fonte genérica (Inter/system)", "V09": "Headline centralizada gigante", "V10": "Pílula acima do título",
     "V11": "Cardificação", "V12": "Grade de cards de feature idênticos", "V13": "Ícones genéricos (Lucide/emoji)",
     "V14": "Hover que levanta tudo / transition: all", "V15": "Animação de entrada em toda seção",
-    "V17": "Imagens placeholder ou logos fictícios", "V19": "KPIs com variação padrão", "V20": "Rastro da ferramenta geradora",
+    "V17": "Imagens placeholder ou logos fictícios", "V19": "Dashboard e gráfico padrão", "V20": "Rastro da ferramenta geradora",
     "V21": "Cara de IA na interface", "E01": "Sequência canônica de landing de IA", "E02": "Linha de estatísticas redondas",
     "E03": "Depoimentos genéricos 5 estrelas", "E04": "Hero com primário + 'Saiba mais'", "E06": "Rodapé genérico",
     "T01": "Verbos de hype", "T02": "Promessa vazia", "T03": "'Não é apenas X, é Y'", "T05": "Excesso de travessões",
@@ -50,9 +51,11 @@ COLLECT_JS = r"""
   const all = Array.from(document.querySelectorAll('body *')).slice(0, 6000);
   const out = { title: document.title, favicon: (document.querySelector('link[rel*=icon]') || {}).href || '',
     text: document.body ? document.body.innerText : '', fonts: {}, colors: {}, gradients: [], gradientText: [],
-    backdrop: 0, blobs: 0, gridBg: 0, cards: 0, pills: [], lucide: [], buttons: [], imgs: [], headings: [],
+    backdrop: 0, blobs: 0, svgColors: {}, gridBg: 0, cards: 0, pills: [], lucide: [], buttons: [], imgs: [], headings: [],
     hoverLift: 0, transitionAll: 0, fadeKeyframes: [], featureGrids: [], scripts: [], classes: '' };
   const add = (o, k) => { if (k) o[k] = (o[k] || 0) + 1; };
+  const box = r => ({ x: Math.round(r.left + scrollX), y: Math.round(r.top + scrollY), w: Math.round(r.width), h: Math.round(r.height) });
+  out.marks = [];
   const rgb2hex = c => { const m = c && c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
     if (!m || (m[4] !== undefined && parseFloat(m[4]) < 0.15)) return null;
     return '#' + [m[1], m[2], m[3]].map(x => (+x).toString(16).padStart(2, '0')).join(''); };
@@ -66,23 +69,26 @@ COLLECT_JS = r"""
     const bi = s.backgroundImage;
     if (bi && bi.includes('gradient')) {
       out.gradients.push({ tag: el.tagName, w: Math.round(r.width), h: Math.round(r.height), bg: bi.slice(0, 300) });
+      if (r.width * r.height > 4000) out.marks.push({ kind: 'gradient', bg: bi.slice(0, 300), ...box(r) });
       const bs = s.backgroundSize;
       if (/repeating|radial-gradient\([^)]*1px|linear-gradient[\s\S]*linear-gradient/.test(bi) && /^\d+px/.test(bs) && parseFloat(bs) <= 80) out.gridBg++;
     }
     const clip = s.backgroundClip + ' ' + (s.webkitBackgroundClip || '');
-    if (clip.includes('text') && bi.includes('gradient')) out.gradientText.push(el.innerText.slice(0, 80));
-    if (s.backdropFilter && s.backdropFilter.includes('blur')) out.backdrop++;
+    if (clip.includes('text') && bi.includes('gradient')) { out.gradientText.push(el.innerText.slice(0, 80)); out.marks.push({ kind: 'gradientText', ...box(r) }); }
+    if (s.backdropFilter && s.backdropFilter.includes('blur')) { out.backdrop++; out.marks.push({ kind: 'backdrop', ...box(r) }); }
     const blur = (s.filter || '').match(/blur\(([\d.]+)px/);
-    if (blur && parseFloat(blur[1]) >= 40) out.blobs++;
+    if (blur && parseFloat(blur[1]) >= 40) { out.blobs++; out.marks.push({ kind: 'blob', ...box(r) }); }
     const rad = parseFloat(s.borderTopLeftRadius);
     if (rad >= 12 && rad <= 28 && s.boxShadow !== 'none' && r.width > 120 && r.height > 80) out.cards++;
     if (rad >= r.height / 2 - 1 && r.height < 40 && r.width < 420 && hasText && (parseFloat(s.borderTopWidth) > 0 || rgb2hex(s.backgroundColor)))
-      out.pills.push({ text: el.innerText.trim().slice(0, 60), top: Math.round(r.top + scrollY) });
+      { out.pills.push({ text: el.innerText.trim().slice(0, 60), top: Math.round(r.top + scrollY) }); out.marks.push({ kind: 'pill', text: el.innerText.trim().slice(0, 60), ...box(r) }); }
     if (/^(A|BUTTON)$/.test(el.tagName) && el.innerText.trim())
       out.buttons.push({ text: el.innerText.trim().slice(0, 60), top: Math.round(r.top + scrollY), filled: !!rgb2hex(s.backgroundColor) });
     if (/^H[1-3]$/.test(el.tagName)) out.headings.push({ tag: el.tagName, text: el.innerText.trim().slice(0, 140),
       align: s.textAlign, size: parseFloat(s.fontSize), top: Math.round(r.top + scrollY), font: s.fontFamily });
-    if (el.tagName === 'svg' || el.tagName === 'SVG') { const c = el.getAttribute('class') || ''; if (c.includes('lucide')) out.lucide.push(c); }
+    if (el instanceof SVGElement && /^(path|rect|circle|line|polyline|polygon)$/i.test(el.tagName)) {
+      add(out.svgColors, rgb2hex(s.fill)); add(out.svgColors, rgb2hex(s.stroke)); }
+    if (el.tagName === 'svg' || el.tagName === 'SVG') { const c = el.getAttribute('class') || ''; if (c.includes('lucide')) { out.lucide.push(c); out.marks.push({ kind: 'lucide', cls: c, ...box(r) }); } }
     const kids = Array.from(el.children).filter(vis);
     if ((s.display.includes('grid') || s.display.includes('flex')) && kids.length >= 3 && kids.length <= 8) {
       const rs = kids.map(k => k.getBoundingClientRect());
@@ -90,7 +96,7 @@ COLLECT_JS = r"""
       const sameH = rs.every(x => Math.abs(x.height - rs[0].height) < rs[0].height * 0.2);
       const rowish = new Set(rs.map(x => Math.round(x.top / 10))).size <= Math.ceil(kids.length / 2);
       const iconTitle = kids.every(k => (k.querySelector('svg, img') || EMOJI_RE.test(k.innerText.slice(0, 4))) && k.innerText.trim().split(/\s+/).length >= 4);
-      if (sameW && sameH && rowish && iconTitle && rs[0].width > 140) out.featureGrids.push({ n: kids.length, sample: kids[0].innerText.trim().slice(0, 80) });
+      if (sameW && sameH && rowish && iconTitle && rs[0].width > 140) { out.featureGrids.push({ n: kids.length, sample: kids[0].innerText.trim().slice(0, 80) }); out.marks.push({ kind: 'featureGrid', ...box(r) }); }
     }
   }
   for (const sh of Array.from(document.styleSheets)) {
@@ -102,13 +108,65 @@ COLLECT_JS = r"""
       if (rule.type === 7 && /fade|slide|up|reveal|appear/i.test(rule.name)) out.fadeKeyframes.push(rule.name);
     }
   }
-  out.imgs = Array.from(document.images).map(i => ({ src: i.currentSrc || i.src, alt: i.alt || '' }));
+  out.imgs = Array.from(document.images).map(i => { const r = (i.getBoundingClientRect().width ? i : (i.parentElement || i)).getBoundingClientRect();
+    return { src: i.currentSrc || i.src, alt: i.alt || '', ...box(r) }; });
   out.scripts = Array.from(document.scripts).map(s => s.src).filter(Boolean);
   out.classes = Array.from(document.querySelectorAll('[class]')).slice(0, 4000).map(e => e.getAttribute('class')).join(' ').slice(0, 200000);
   out.aos = document.querySelectorAll('[data-aos], [data-animate], .animate-fade-in, .fade-in, .reveal').length;
   return out;
 }
 """.replace("EMOJI_RE", "/[\\u{1F300}-\\u{1FAFF}\\u2600-\\u27BF]/u")
+
+
+OVERLAY_JS = r"""
+(marks) => {
+  const root = document.createElement('div');
+  root.style.cssText = 'position:absolute;left:0;top:0;width:0;height:0;z-index:2147483647;pointer-events:none';
+  for (const m of marks) {
+    const b = document.createElement('div');
+    b.style.cssText = `position:absolute;left:${Math.max(0, m.x)}px;top:${Math.max(24, m.y)}px;width:${Math.max(m.w, 18)}px;height:${Math.max(m.h, 18)}px;` +
+      'outline:3px solid #E60F57;outline-offset:2px;background:rgba(230,15,87,.07);box-sizing:border-box';
+    const t = document.createElement('span');
+    t.textContent = m.label;
+    t.style.cssText = (m.w > 600 ? 'right:-3px;' : 'left:-3px;') + 'position:absolute;top:-24px;background:#E60F57;color:#fff;font:700 12px/16px system-ui,sans-serif;padding:3px 6px;border-radius:4px;white-space:nowrap';
+    b.appendChild(t); root.appendChild(b);
+  }
+  document.documentElement.appendChild(root);
+}
+"""
+
+# Escopo do revisor visual: todos os sinais V e os de layout da estrutura.
+VISUAL_CODES = lambda code: code.startswith("V") or code in ("E04", "E05", "E07")
+AI_GRADIENT_RGB = ("99, 102, 241", "139, 92, 246", "168, 85, 247", "124, 58, 237", "236, 72, 153", "147, 51, 234", "79, 70, 229")
+AI_GRADIENT_HEX = ("#6366f1", "#8b5cf6", "#a855f7", "#7c3aed", "#ec4899")
+
+
+def is_ai_gradient(bg, hues):
+    bg = bg.lower()
+    return any(h in bg for h in hues) or any(c in bg for c in AI_GRADIENT_HEX + AI_GRADIENT_RGB)
+
+
+def visual_marks(data, findings, pat):
+    """Converte os achados visuais em caixas para a captura anotada."""
+    codes = {f["code"] for f in findings}
+    hues = pat["ai_gradient_hues"]
+    rules = {
+        "V01": lambda m: m["kind"] == "gradient" and is_ai_gradient(m.get("bg", ""), hues),
+        "V02": lambda m: m["kind"] == "gradientText",
+        "V04": lambda m: m["kind"] == "blob",
+        "V05": lambda m: m["kind"] == "backdrop",
+        "V10": lambda m: m["kind"] == "pill" and any(m.get("text", "") in f["evidencia"] for f in findings if f["code"] == "V10"),
+        "V12": lambda m: m["kind"] == "featureGrid",
+        "V13": lambda m: m["kind"] == "lucide" and any(f"lucide-{n}" in m.get("cls", "") for n in pat["lucide_generic_icons"]),
+    }
+    marks = []
+    for code, match in rules.items():
+        if code in codes:
+            marks += [dict(m, label=f"{code} {TITLES[code]}") for m in data.get("marks", []) if match(m)][:6]
+    if "V17" in codes:
+        marks += [dict(i, label=f"V17 {TITLES['V17']}") for i in data.get("imgs", [])
+                  if any(h in i["src"] for h in pat["placeholder_image_hosts"])][:6]
+    return marks
 
 
 def load_patterns():
@@ -133,7 +191,7 @@ def find_chromium():
     return None
 
 
-def collect_rendered(target, screenshot=None):
+def collect_rendered(target, screenshot=None, annotate=None, post=None):
     from playwright.sync_api import sync_playwright
     url = target if re.match(r"https?://", target) else Path(target).resolve().as_uri()
     with sync_playwright() as p:
@@ -152,6 +210,9 @@ def collect_rendered(target, screenshot=None):
         data = page.evaluate(COLLECT_JS)
         if screenshot:
             page.screenshot(path=screenshot, full_page=True)
+        if annotate and post:
+            page.evaluate(OVERLAY_JS, post(data))
+            page.screenshot(path=annotate, full_page=True)
         mobile = browser.new_page(viewport={"width": 390, "height": 844})
         mobile.goto(url, wait_until="networkidle", timeout=60000)
         data["mobile_overflow"] = mobile.evaluate("document.documentElement.scrollWidth") > 392
@@ -209,8 +270,7 @@ def analyze(d, pat, allowed_colors, allowed_fonts):
     tw = pat["tailwind_default_colors"]
 
     # --- Visual: cor ---
-    ai_grads = [g for g in d["gradients"] if any(h in g.get("bg", "") for h in hues)
-                or any(c in g.get("bg", "").lower() for c in ("#6366f1", "#8b5cf6", "#a855f7", "#7c3aed", "#ec4899", "99, 102, 241", "139, 92, 246", "168, 85, 247", "124, 58, 237", "236, 72, 153", "147, 51, 234", "79, 70, 229"))]
+    ai_grads = [g for g in d["gradients"] if is_ai_gradient(g.get("bg", ""), hues)]
     ai_grads += [{"bg": c} for c in re.findall(r"from-(?:indigo|violet|purple|fuchsia|pink|blue)-\d+", classes)]
     if ai_grads:
         hit("V01", "alta", f"{len(ai_grads)} gradiente(s) na família roxo/azul/rosa. Ex.: {ai_grads[0].get('bg', '')[:110]}")
@@ -266,9 +326,16 @@ def analyze(d, pat, allowed_colors, allowed_fonts):
     if ph or fake:
         hit("V17", "alta", "; ".join(filter(None, [f"{len(ph)} imagem(ns) placeholder ({ph[0][:60]})" if ph else "",
                                                    f"logos fictícios: {', '.join(fake)}" if fake else ""])))
+    chart = sorted({c for c in d.get("svgColors", {}) if c in pat["chart_default_colors"]} - allowed_colors)
     kpi = re.findall(r"[+↑▲]\s?\d+[,.]?\d*\s?%\s*(?:vs|em rela|from|desde|do m)", low)
+    v19 = []
+    if chart:
+        v19.append("cores padrão de biblioteca de gráfico: " + ", ".join(f"{c} ({pat['chart_default_colors'][c]})" for c in chart))
     if len(kpi) >= 2:
-        hit("V19", "media", f"{len(kpi)} KPI(s) com variação padrão (\"{kpi[0]}…\")")
+        v19.append(f"{len(kpi)} KPI(s) com variação padrão (\"{kpi[0]}…\")")
+    if v19:
+        msg = "; ".join(v19)
+        hit("V19", "media", msg[0].upper() + msg[1:])
     trace_src = " ".join([low, d.get("title", "").lower(), " ".join(d["scripts"]).lower()])
     traces = [t for t in pat["generator_traces"] if t in trace_src]
     if d.get("title", "").strip().lower() in ("vite + react + ts", "vite + react", "react app", "document", ""):
@@ -339,11 +406,11 @@ def analyze(d, pat, allowed_colors, allowed_fonts):
     return F
 
 
-def report(target, d, findings):
+def report(target, d, findings, title="Relatório anti-slop"):
     score = min(100, sum(SEV_POINTS[f["severidade"]] for f in findings))
     verdict = ("Autoral" if score <= 15 else "Traços de IA" if score <= 35 else "Slop evidente" if score <= 60 else "Template de IA")
     order = {"alta": 0, "media": 1, "baixa": 2}
-    lines = [f"# Relatório anti-slop", "", f"- **Alvo:** {target}", f"- **Modo:** {d['mode']}",
+    lines = [f"# {title}", "", f"- **Alvo:** {target}", f"- **Modo:** {d['mode']}",
              f"- **Slop Score:** **{score}/100**, {verdict}",
              f"- **Achados:** {sum(f['severidade']=='alta' for f in findings)} alta · "
              f"{sum(f['severidade']=='media' for f in findings)} média · {sum(f['severidade']=='baixa' for f in findings)} baixa", ""]
@@ -370,6 +437,8 @@ def main():
     ap.add_argument("--json", help="grava os achados em JSON")
     ap.add_argument("--screenshot", help="grava captura de página inteira (modo renderizado)")
     ap.add_argument("--out", help="grava o relatório em Markdown")
+    ap.add_argument("--only", choices=["visual"], help="restringe aos sinais visuais (V*) e de layout (E04, E05, E07)")
+    ap.add_argument("--annotate", help="grava captura com cada sinal visual marcado e rotulado (modo renderizado)")
     a = ap.parse_args()
 
     pat = load_patterns()
@@ -377,13 +446,20 @@ def main():
     data = None
     if not a.static:
         try:
-            data = collect_rendered(a.target, a.screenshot)
+            post = lambda d: visual_marks(d, analyze(d, pat, allowed_colors, allowed_fonts), pat)
+            data = collect_rendered(a.target, a.screenshot, a.annotate, post)
         except ImportError:
             print("Playwright não instalado: usando modo estático (pip install playwright).", file=sys.stderr)
     if data is None:
         data = collect_static(a.target)
     findings = analyze(data, pat, allowed_colors, allowed_fonts)
-    score, verdict, md = report(a.target, data, findings)
+    title = "Relatório anti-slop"
+    if a.only == "visual":
+        findings = [f for f in findings if VISUAL_CODES(f["code"])]
+        title = "Relatório de slop visual"
+    if a.annotate and data["mode"] != "renderizado":
+        print("--annotate exige o modo renderizado (Playwright).", file=sys.stderr)
+    score, verdict, md = report(a.target, data, findings, title)
     print(md)
     if a.out:
         Path(a.out).write_text(md + "\n", encoding="utf-8")

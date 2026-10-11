@@ -55,7 +55,7 @@ Os códigos com `*` são detectados automaticamente pelo `slop_scan.py`. Os dema
 
 | Código | Sinal | Sev. | Troca no RD Kit |
 |---|---|---|---|
-| V19* | Todo KPI com "+12,5% vs. mês passado" e seta verde; gráfico de área com gradiente padrão | Média | DataBlock com dado real; variação só quando existe base comparável; paleta de suporte |
+| V19* | Todo KPI com "+12,5% vs. mês passado" e seta verde; gráfico com as cores padrão da biblioteca (Recharts `#8884d8`/`#82ca9d`, Chart.js `#36A2EB`/`#FF6384`) ou área com gradiente padrão | Média | DataBlock com dado real; variação só quando existe base comparável; paleta de suporte |
 | V20* | Selo ou rastro da ferramenta geradora: "Made with …", "Built with …", título de aba "Vite + React" ou "React App", favicon padrão, domínio de preview | Alta | Título, favicon e domínio próprios; remover o selo |
 | V21* | "Cara de IA" na ferramenta: botão com ✨, "Gerar com IA", "Analisando com IA…" sem necessidade | Média | Rótulo pelo resultado ("Calcular meu ROI"); IA só aparece quando for o diferencial |
 

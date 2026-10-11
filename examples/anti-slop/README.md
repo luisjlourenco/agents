@@ -1,6 +1,6 @@
 # Anti-slop: revisão de sites e ferramentas gerados por IA
 
-Kit do agente [Anti-Slop Reviewer](../../design/design-anti-slop-reviewer.md). Ele identifica os sinais visuais, estruturais e de texto que denunciam uma interface feita por Claude, Manus, v0, Lovable e afins, dá uma nota (Slop Score) e gera o prompt de correção.
+Kit dos agentes [Anti-Slop Reviewer](../../design/design-anti-slop-reviewer.md) (texto, estrutura e visual) e [Visual Slop Reviewer](../../design/design-visual-slop-reviewer.md) (só visual, com testes de percepção e captura anotada). Eles identificam os sinais visuais, estruturais e de texto que denunciam uma interface feita por Claude, Manus, v0, Lovable e afins, dá uma nota (Slop Score) e gera o prompt de correção.
 
 ## Uso rápido
 
@@ -17,6 +17,8 @@ python3 slop_scan.py https://minha-ferramenta.manus.space \
 | `--screenshot arquivo.png` | Captura de página inteira, para a inspeção visual |
 | `--out relatorio.md` / `--json relatorio.json` | Grava o relatório |
 | `--static` | Não abre navegador: analisa só o HTML (não funciona em SPA/React) |
+| `--only visual` | Só sinais visuais (V*) e de layout (E04, E05, E07): modo do Visual Slop Reviewer |
+| `--annotate arquivo.png` | Captura com cada sinal visual marcado e rotulado sobre a página |
 
 ## Arquivos
 
@@ -27,6 +29,8 @@ python3 slop_scan.py https://minha-ferramenta.manus.space \
 | `patterns.json` | Listas editáveis: cores Tailwind, fontes genéricas, frases, CTAs, rastros de geradores |
 | `PROMPT-MANUS.md` | Bloco de prevenção para colar antes de gerar e modelo de prompt de correção |
 | `fixtures/slop-landing.html` | Página com slop proposital, para testar o scanner |
+| `SKILL.md` / `SKILL-VISUAL.md` | Instruções das skills para o Manus (revisor geral e revisor visual) |
+| `package_manus.py` | Gera os dois `.zip` de skill para o Manus |
 
 ## Calibração
 
@@ -35,6 +39,7 @@ python3 slop_scan.py https://minha-ferramenta.manus.space \
 | `fixtures/slop-landing.html` | renderizado e estático | 100/100 (Template de IA) |
 | RD Kit `dist/calculadora-roi-marketing.html` | renderizado | 0/100 (Autoral) |
 | RD Kit `dist/potencial-da-base-marketing-continuo.html` | renderizado | 0/100 (Autoral) |
+| `fixtures/slop-landing.html` com `--only visual` | renderizado | 100/100, 16 sinais visuais marcados na captura |
 
 ## Limites
 
