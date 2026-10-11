@@ -301,8 +301,9 @@ def collect_static(target):
     title = (re.search(r"<title>([\s\S]*?)</title>", html, flags=re.I) or [None, ""])[1]
     fonts = Counter(f.lower() for f in re.findall(r"font-family:\s*['\"]?([A-Za-z0-9 ]+)", html))
     fonts.update(f.replace("+", " ").lower() for f in re.findall(r"family=([A-Za-z+]+)", html))
+    fav = re.search(r'<link\b[^>]*rel=["\'][^"\']*icon[^"\']*["\'][^>]*href=["\']([^"\']+)|<link\b[^>]*href=["\']([^"\']+)["\'][^>]*rel=["\'][^"\']*icon', html, re.I)
     return {
-        "mode": "estático", "title": title, "favicon": "", "text": text, "fonts": dict(fonts),
+        "mode": "estático", "title": title, "favicon": (fav.group(1) or fav.group(2)) if fav else "", "text": text, "fonts": dict(fonts),
         "colors": dict(Counter(c.lower() for c in re.findall(r"#[0-9a-fA-F]{6}\b", html))),
         "gradients": [{"bg": g} for g in re.findall(r"(?:linear|radial)-gradient\([^;\"]+", html)],
         "gradientText": ["(classe)"] * len(re.findall(r"bg-clip-text|background-clip:\s*text", html)),
@@ -403,6 +404,11 @@ def analyze(d, pat, allowed_colors, allowed_fonts):
     traces = [t for t in pat["generator_traces"] if t in trace_src]
     if d.get("title", "").strip().lower() in ("vite + react + ts", "vite + react", "react app", "document", ""):
         traces.append(f"título da aba: \"{d.get('title', '')}\"")
+    fav = (d.get("favicon") or "").lower()
+    if not fav:
+        traces.append("sem favicon declarado (aba mostra o ícone padrão)")
+    elif re.search(r"vite\.svg|react\.svg|next\.svg|/logo192|lovable|manus", fav):
+        traces.append(f"favicon padrão do gerador ({fav.rsplit('/', 1)[-1][:40]})")
     if any("cdn.tailwindcss.com" in s for s in d["scripts"]):
         traces.append("Tailwind via CDN (padrão de protótipo)")
     if traces:

@@ -8,6 +8,7 @@ Uso:
 Saída: dist/<slug>.html — um arquivo único, sem dependências além da fonte
 DM Sans, com tokens, componentes e logos oficiais embutidos.
 """
+import base64
 import html
 import json
 import re
@@ -87,6 +88,7 @@ def build(manifest_path, template, css, logos):
         # </ escapado para o JSON nunca fechar a tag <script>
         "TOOL_JSON": json.dumps(script_data, ensure_ascii=False).replace("</", "<\\/"),
         "THEME": html.escape(tool.get("theme", "rd-station")),
+        "FAVICON_DATA_URI": "data:image/svg+xml;base64," + base64.b64encode(read("brand/rd-station-icon.svg").encode()).decode(),
         "CSS": css,
         **logos,
     }

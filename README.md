@@ -201,6 +201,7 @@ Making it beautiful, usable, and delightful.
 | 🔷 [RD Station UI Designer](design/design-rd-station-ui-designer.md) | Tangram design system, RD Station/TOTVS Key Visual, mass-produced tools | Calculators, dashboards and event pages on-brand with the official RD Station logo |
 | 🧹 [Anti-Slop Reviewer](design/design-anti-slop-reviewer.md) | AI-generated UI/copy tells, Slop Score scanner, fix prompts | Reviewing Manus/Claude/v0-built sites and tools before they ship |
 | 👁️ [Visual Slop Reviewer](design/design-visual-slop-reviewer.md) | Visual-only AI-slop audit: perception tests, AI-image forensics, annotated screenshots | Art-direction review of AI-generated sites and tools before launch |
+| 🔖 [Favicon Identity Specialist](design/design-favicon-identity-specialist.md) | Official RD Station favicon pack, head/manifest/SEO identity fixes | Replacing default favicons on Manus/Vite/Next-built sites before launch |
 | 🔍 [UX Researcher](design/design-ux-researcher.md) | User testing, behavior analysis, research | Understanding users, usability testing, design insights |
 | 🏛️ [UX Architect](design/design-ux-architect.md) | Technical architecture, CSS systems, implementation | Developer-friendly foundations, implementation guidance |
 | 🎭 [Brand Guardian](design/design-brand-guardian.md) | Brand identity, consistency, positioning | Brand strategy, identity development, guidelines |
